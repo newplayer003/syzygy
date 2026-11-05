@@ -49,6 +49,8 @@ body{background:var(--bg);color:var(--fg);font-family:var(--kr);font-size:15px;l
 .notice{display:grid;grid-template-columns:auto 1fr;gap:6px 14px;padding:16px 28px;border-bottom:1px dashed var(--line);font-size:12.5px;color:var(--fg);align-items:baseline}
 .notice .k{font-family:var(--en);font-size:10px;letter-spacing:.2em;text-transform:uppercase;color:var(--red-2);font-weight:500}
 .notice em{font-style:normal;color:var(--fg-2)}
+.notice .lineup{font-family:var(--en);font-weight:500;font-size:12.5px;line-height:1.5;display:flex;flex-wrap:wrap;gap:4px 10px}
+.notice .lineup b{font-weight:500;white-space:nowrap}
 form{padding:8px 28px 28px;display:grid}
 .field{padding:20px 0;border-bottom:1px solid var(--line);display:grid;gap:10px;min-width:0}
 .field:last-of-type{border-bottom:0}
@@ -130,7 +132,7 @@ const HTML = `
 <div class="wrap">
 
   <section class="hero">
-    <img class="poster" src="{{HERO}}" onerror="if(!this.dataset.fb){this.dataset.fb=1;this.src='{{ROOT}}hero.jpg'}" alt="NEW PLAYER 003 presents SYZYGY — Spin the Eclipse. 2026.11.28 SAT 성수율뮤직 18:00–23:00. Ticket 20,000원 · Early bird 15,000원 · 1 free drink 포함. Dress code: all black + red point (권장) / 19+ only / Sound by SILO LAB">
+    <img class="poster" src="{{HERO}}" onerror="if(!this.dataset.fb){this.dataset.fb=1;this.src='{{ROOT}}hero.jpg'}" alt="NEW PLAYER 003 presents SYZYGY — Spin the Eclipse. 2026.11.28 SAT 성수율뮤직 18:00–23:00. Ticket 20,000원 · Early bird 15,000원 · 1 free drink 포함. Dress code: all black + red point (권장) / 19+ only">
     <div class="maps" id="maps"></div>
     <div class="share">
       <button type="button" id="shareBtn" class="share-btn"><span id="shareLabel">share</span></button>
@@ -145,7 +147,7 @@ const HTML = `
     <div class="notice">
       <span class="k">Dress code</span><span>ALL BLACK + RED POINT <em>(권장)</em></span>
       <span class="k">Age</span><span>19+ only</span>
-      <span class="k">Sound by</span><span>SILO LAB</span>
+      <span class="k">Line up</span><span class="lineup"><b>DPC</b> <b>D.KIM</b> <b>DJ No:biz</b> <b>JENNA KIM</b> <b>DJ Maple</b> <b>심섹시</b> <b>MIGNØ</b> <b>Linzi</b> <b>Elissa</b></span>
     </div>
 
     <form id="form" novalidate>
