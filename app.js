@@ -1,6 +1,7 @@
 /* SYZYGY 신청 페이지 공통 스크립트
  * - 각 페이지(index.html, dj_xxx/index.html)는 OG 메타 + window.PAGE 설정만 갖고, 나머지는 전부 여기서 그립니다.
- * - 페이지별 설정: window.PAGE = { hero: "이미지파일", source: "시트 '유입 경로' 열에 들어갈 값" }
+ * - 페이지별 설정: window.PAGE = { hero: "이미지파일", source: "시트 '유입 경로' 열에 들어갈 값",
+ *                               highlight: { name: "라인업 이름", note: "이름 옆 괄호 문구" }  // 선택 }
  * - 이미지 파일은 저장소 루트(index.html 옆)에 두세요. hero 파일이 없으면 hero.jpg 로 대체됩니다.
  */
 (function () {
@@ -51,6 +52,8 @@ body{background:var(--bg);color:var(--fg);font-family:var(--kr);font-size:15px;l
 .notice em{font-style:normal;color:var(--fg-2)}
 .notice .lineup{font-family:var(--en);font-weight:500;font-size:12.5px;line-height:1.5;display:flex;flex-wrap:wrap;gap:4px 10px}
 .notice .lineup b{font-weight:500;white-space:nowrap}
+.notice .lineup b.hl{color:var(--red-2);white-space:normal}
+.notice .lineup b.hl .note{font:italic 300 12px var(--en);letter-spacing:.02em;white-space:nowrap;margin-left:5px}
 form{padding:8px 28px 28px;display:grid}
 .field{padding:20px 0;border-bottom:1px solid var(--line);display:grid;gap:10px;min-width:0}
 .field:last-of-type{border-bottom:0}
@@ -248,6 +251,10 @@ const HTML = `
 
 const style = document.createElement("style"); style.textContent = CSS; document.head.appendChild(style);
 document.body.insertAdjacentHTML("afterbegin", HTML.replace(/{{HERO}}/g, ROOT + PAGE.hero).replace(/{{ROOT}}/g, ROOT));
+if (PAGE.highlight && PAGE.highlight.name) {
+  const b = [...document.querySelectorAll(".lineup b")].find(x => x.textContent.trim() === PAGE.highlight.name);
+  if (b) { b.classList.add("hl"); if (PAGE.highlight.note) b.insertAdjacentHTML("beforeend", `<span class="note">(${PAGE.highlight.note})</span>`); }
+}
 
 /* ---------- 로직 ---------- */
 /* ===================== 설정 (여기만 수정하세요) ===================== */
