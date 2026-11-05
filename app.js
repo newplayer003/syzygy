@@ -52,7 +52,8 @@ body{background:var(--bg);color:var(--fg);font-family:var(--kr);font-size:15px;l
 .notice em{font-style:normal;color:var(--fg-2)}
 .notice .lineup{font-family:var(--en);font-weight:500;font-size:12.5px;line-height:1.5;display:flex;flex-wrap:wrap;gap:4px 10px}
 .notice .lineup b{font-weight:500;white-space:nowrap}
-.notice .lineup b.hl{color:var(--red-2);white-space:normal}
+.notice .lineup b.hl{color:var(--fg);white-space:normal}
+.notice .lineup b.hl .star{color:var(--red-2);font-style:normal}
 .notice .lineup b.hl .note{font:italic 300 12px var(--en);letter-spacing:.02em;white-space:nowrap;margin-left:5px}
 form{padding:8px 28px 28px;display:grid}
 .field{padding:20px 0;border-bottom:1px solid var(--line);display:grid;gap:10px;min-width:0}
@@ -253,7 +254,7 @@ const style = document.createElement("style"); style.textContent = CSS; document
 document.body.insertAdjacentHTML("afterbegin", HTML.replace(/{{HERO}}/g, ROOT + PAGE.hero).replace(/{{ROOT}}/g, ROOT));
 if (PAGE.highlight && PAGE.highlight.name) {
   const b = [...document.querySelectorAll(".lineup b")].find(x => x.textContent.trim() === PAGE.highlight.name);
-  if (b) { b.classList.add("hl"); if (PAGE.highlight.note) b.insertAdjacentHTML("beforeend", `<span class="note">(${PAGE.highlight.note})</span>`); }
+  if (b) { b.classList.add("hl"); if (PAGE.highlight.note) b.insertAdjacentHTML("beforeend", `<span class="note">(${PAGE.highlight.note.replace(/★/g, '<span class="star">★</span>')})</span>`); }
 }
 
 /* ---------- 로직 ---------- */
