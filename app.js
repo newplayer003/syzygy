@@ -151,7 +151,7 @@ const HTML = `
     <div class="notice">
       <span class="k">Dress code</span><span>ALL BLACK + RED POINT <em>(권장)</em></span>
       <span class="k">Age</span><span>19+ only</span>
-      <span class="k">Line up</span><span class="lineup"><b>DPC</b> <b>D.KIM</b> <b>DJ No:biz</b> <b>JENNA KIM</b> <b>DJ Maple</b> <b>심섹시</b> <b>MIGNØ</b> <b>Linzi</b> <b>Elissa</b></span>
+      <span class="k">Line up</span><span class="lineup"><b>DPC</b> <b>D.KIM</b> <b>DJ No:biz</b> <b>JENNA KIM</b> <b>DJ Maple</b> <b>심섹시</b> <b>MIGNØ</b> <b>Linzi</b> <b>Elissa</b> <b>DJ Hondo</b></span>
     </div>
 
     <form id="form" novalidate>
@@ -254,7 +254,7 @@ const style = document.createElement("style"); style.textContent = CSS; document
 document.body.insertAdjacentHTML("afterbegin", HTML.replace(/{{HERO}}/g, ROOT + PAGE.hero).replace(/{{ROOT}}/g, ROOT));
 if (PAGE.highlight && PAGE.highlight.name) {
   const b = [...document.querySelectorAll(".lineup b")].find(x => x.textContent.trim() === PAGE.highlight.name);
-  if (b) { b.classList.add("hl"); if (PAGE.highlight.note) b.insertAdjacentHTML("beforeend", `<span class="note">(${PAGE.highlight.note.replace(/★/g, '<span class="star">★</span>')})</span>`); }
+  if (b) { b.parentNode.appendChild(b); b.classList.add("hl"); if (PAGE.highlight.note) b.insertAdjacentHTML("beforeend", `<span class="note">(${PAGE.highlight.note.replace(/★/g, '<span class="star">★</span>')})</span>`); }
 }
 
 /* ---------- 로직 ---------- */
