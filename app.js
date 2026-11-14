@@ -93,18 +93,22 @@ body{background:var(--bg);color:var(--fg);font-family:var(--kr);font-size:15px;l
 .pk-list{display:grid;gap:8px}
 .pk-head{display:flex;flex-wrap:wrap;align-items:center;gap:6px 10px;margin-top:8px;padding-top:14px;border-top:1px dashed var(--line)}
 .pk-head .t{font:600 12px var(--en);letter-spacing:.2em;color:var(--fg)}
-.pk-head small{flex-basis:100%;font-size:12px;color:var(--fg-2)}
+.pk-head small{flex-basis:100%;font-size:12.5px;color:var(--fg-2)}
+.pk-sp{flex-basis:100%;display:flex;flex-wrap:wrap;align-items:baseline;gap:2px 8px;margin-top:2px;padding:9px 12px;border:1px solid var(--line);background:#080707}
+.pk-sp .k{flex-basis:100%;font:500 10px var(--en);letter-spacing:.18em;text-transform:uppercase;color:var(--red-2)}
+.pk-sp b{font:500 12px var(--en);letter-spacing:.04em;color:var(--fg)}
+.pk-sp i{font-style:normal;color:var(--fg-2);font-size:11px}
 .pk-list input{position:absolute;opacity:0;width:0;height:0}
-.pk-card{cursor:pointer;border:1px solid var(--line);background:#080707;display:grid;grid-template-columns:1fr auto;gap:0 10px;position:relative;overflow:hidden;transition:border-color .2s,background .2s;min-width:0}
-.pk-card .txt{padding:14px 0 4px 16px;display:grid;gap:3px;align-content:start;min-width:0}
-.pk-card h4{margin:0;font:600 16px var(--en);letter-spacing:.12em}
-.pk-card .where{font-size:12px;color:var(--red-2);white-space:nowrap}
-.pk-card .price{font:600 17px var(--en);color:var(--fg);font-variant-numeric:tabular-nums;margin-top:2px}
-.pk-card ul{grid-column:1/-1;margin:8px 16px 14px;padding:0 0 0 9px;border-left:2px solid var(--red);list-style:none;font-size:12.5px;line-height:1.6;color:var(--fg)}
+.pk-card{cursor:pointer;border:1px solid var(--line);background:#080707;display:block;padding:12px 14px 12px;position:relative;overflow:hidden;transition:border-color .2s,background .2s;min-width:0}
+.pk-card .txt{display:grid;gap:1px;align-content:start;min-width:0;padding-right:var(--iw,0);min-height:60px}
+.pk-card h4{margin:0;font:600 15px var(--en);letter-spacing:.12em}
+.pk-card .where{font-size:12.5px;color:var(--red-2)}
+.pk-card .price{font:600 16px var(--en);color:var(--fg);font-variant-numeric:tabular-nums;margin-top:1px}
+.pk-card ul{margin:8px 0 0;padding:0 0 0 9px;border-left:2px solid var(--red);list-style:none;font-size:13px;line-height:1.55;color:var(--fg)}
 .pk-card .cnt{font:500 10px var(--en);letter-spacing:.14em;color:var(--fg-2);margin-top:4px;white-space:nowrap}
 .pk-card .cnt b{color:var(--red-2);font-weight:600}
-.pk-card .img{align-self:end;width:46vw;max-width:200px;display:flex;align-items:flex-end;justify-content:flex-end;padding:10px 6px 0 0}
-.pk-card .img img{width:100%;height:auto;max-height:104px;object-fit:contain;object-position:right bottom;display:block;-webkit-mask:linear-gradient(to right,transparent,#000 18%);mask:linear-gradient(to right,transparent,#000 18%)}
+.pk-card .img{position:absolute;top:8px;right:8px;height:64px;display:block;pointer-events:none}
+.pk-card .img img{height:100%;width:auto;display:block;-webkit-mask:linear-gradient(to right,transparent,#000 18%);mask:linear-gradient(to right,transparent,#000 18%)}
 .pk-list input:checked+.pk-card{border-color:var(--red-2);background:linear-gradient(180deg,rgba(216,15,38,.14),rgba(216,15,38,.02))}
 .pk-list input:checked+.pk-card h4::after{content:" ✓";color:var(--red-2)}
 .pk-list input:disabled+.pk-card{opacity:.45;cursor:not-allowed}
@@ -118,25 +122,25 @@ body{background:var(--bg);color:var(--fg);font-family:var(--kr);font-size:15px;l
 .pk-meta strong{color:var(--fg);font-weight:500}
 @media (max-width:380px){.pk-card .img img{max-height:84px}.tt-list li{grid-template-columns:78px 1fr}}
 .tbl-sub{display:grid;gap:10px;margin-top:8px}
-.tbl-sub .lab{font-size:12.5px;color:var(--fg-2)}
+.tbl-sub .lab{font-size:13px;color:var(--fg-2)}
 .bottles{display:grid;gap:10px}
 form{padding:8px 28px 28px;display:grid}
 .field{padding:20px 0;border-bottom:1px solid var(--line);display:grid;gap:10px;min-width:0}
 .field:last-of-type{border-bottom:0}
-.lab{font-size:13px;font-weight:500;letter-spacing:.02em;color:var(--fg);display:flex;gap:8px;align-items:baseline}
-.lab .n{font-family:var(--en);font-size:10px;color:var(--red-2);letter-spacing:.14em}
+.lab{font-size:14px;font-weight:500;letter-spacing:.02em;color:var(--fg);display:flex;gap:8px;align-items:baseline}
+.lab .n{font-family:var(--en);font-size:10.5px;color:var(--red-2);letter-spacing:.14em}
 .lab .req{color:var(--red-2);font-size:12px}
 .lab .opt{font-size:11px;color:var(--fg-2);font-weight:400}
 .hint{font-size:12px;color:var(--fg-2);margin:0}
 input[type=text],input[type=tel],select{width:100%;min-width:0;background:transparent;border:0;border-bottom:1px solid var(--smoke);border-radius:0;color:var(--fg);
-  font:inherit;font-size:17px;padding:8px 0;outline:none;transition:border-color .2s;appearance:none;-webkit-appearance:none}
-input::placeholder{color:#4a4345}
+  font:inherit;font-size:16px;padding:8px 0;outline:none;transition:border-color .2s;appearance:none;-webkit-appearance:none}
+input::placeholder{color:#5a5355;font-size:14px}
 input:focus,select:focus{border-bottom-color:var(--red-2)}
 input:focus-visible,select:focus-visible,button:focus-visible,.seg label:focus-within{outline:2px solid var(--red-2);outline-offset:4px}
 select{background-image:linear-gradient(45deg,transparent 50%,var(--fg-2) 50%),linear-gradient(135deg,var(--fg-2) 50%,transparent 50%);
   background-position:calc(100% - 14px) 50%,calc(100% - 9px) 50%;background-size:5px 5px;background-repeat:no-repeat;padding-right:28px;cursor:pointer}
 select option{background:var(--bg-2)}
-select:invalid{color:#4a4345}
+select:invalid{color:#5a5355}
 
 /* ticket type list */
 .seg{display:grid;gap:8px}
@@ -144,7 +148,7 @@ select:invalid{color:#4a4345}
 .seg label{cursor:pointer;border:1px solid var(--line);padding:14px 16px;display:grid;grid-template-columns:1fr auto;gap:2px 12px;align-items:baseline;transition:border-color .2s,background .2s;position:relative;min-width:0}
 .seg label strong{font-weight:500;font-size:15px;display:flex;gap:8px;align-items:center;flex-wrap:wrap}
 .seg label .p{font-family:var(--en);font-weight:500;font-size:15px;color:var(--red-2);font-variant-numeric:tabular-nums;white-space:nowrap}
-.seg label .note{grid-column:1/-1;font-size:12px;color:var(--fg-2)}
+.seg label .note{grid-column:1/-1;font-size:12.5px;color:var(--fg-2);line-height:1.55}
 .seg label .tag{font-family:var(--en);font-size:10px;letter-spacing:.16em;color:var(--red-2)}
 .seg input:checked+label{border-color:var(--red-2);background:linear-gradient(180deg,rgba(216,15,38,.12),rgba(216,15,38,.02))}
 .seg input:disabled+label{opacity:.45;cursor:not-allowed}
@@ -156,7 +160,7 @@ select:invalid{color:#4a4345}
 .step button:disabled{opacity:.3;cursor:not-allowed}
 .step output{display:grid;place-items:center;font-family:var(--en);font-size:16px;border-left:1px solid var(--line);border-right:1px solid var(--line);font-variant-numeric:tabular-nums}
 .amount{font-family:var(--en);font-size:13px;color:var(--fg-2);letter-spacing:.04em}
-.amount b{display:block;font-size:22px;font-weight:600;color:var(--red-2);font-variant-numeric:tabular-nums;line-height:1.2;font-family:var(--kr)}
+.amount b{display:block;font-size:20px;font-weight:600;color:var(--red-2);font-variant-numeric:tabular-nums;line-height:1.2;font-family:var(--kr)}
 
 .acct{border:1px solid var(--line);padding:14px 16px;display:grid;gap:6px;background:#080707;min-width:0}
 .acct .row{display:flex;justify-content:space-between;align-items:center;gap:12px;flex-wrap:wrap}
@@ -252,9 +256,8 @@ const HTML = `
         <div class="lab"><span class="n">05</span>티켓 구분 <span class="req">*</span></div>
         <div class="seg" id="seg" role="radiogroup" aria-label="티켓 구분"></div>
         <div id="pkWrap" hidden>
-          <div class="pk-head" id="pkField"><span class="t">TABLE PACKAGES</span><small>원하는 테이블을 선택해 주세요.</small></div>
+          <div class="pk-head" id="pkField"><span class="t">TABLE PACKAGES</span><small>원하는 테이블을 선택해 주세요.</small><div class="pk-sp" id="pkSpirits"></div></div>
           <div class="pk-list" id="tblSeg" role="radiogroup" aria-label="테이블 패키지"></div>
-          <div class="pk-meta" id="pkMeta"></div>
         </div>
       </div>
 
@@ -308,14 +311,14 @@ const HTML = `
       <div class="field">
         <label class="lab" for="bank"><span class="n">08</span>입금자 은행 <span class="req">*</span></label>
         <select id="bank" name="bank" required>
-          <option value="" disabled selected>입금하시는 분의 은행을 선택하세요</option>
+          <option value="" disabled selected>은행 선택</option>
         </select>
       </div>
 
       <div class="field">
         <label class="lab" for="arrival"><span class="n">09</span>예상 도착 시간 <span class="req">*</span></label>
         <select id="arrival" name="arrival" required>
-          <option value="" disabled selected>18:00 – 23:00 사이에서 선택</option>
+          <option value="" disabled selected>도착 시간 선택 (18:00 – 23:00)</option>
         </select>
         <p class="hint">현장 운영 준비를 위한 참고용이에요. 정확하지 않아도 괜찮고, 다른 시간에 오셔도 됩니다.</p>
       </div>
@@ -379,11 +382,11 @@ const CONFIG = {
   // ※ VVIP(6인)를 2개로 운영하면 VIP(3-4인) 수량이 줄어드니 count 를 함께 바꿔주세요.
   tables: [
     { id: "standing", label: "STANDING", where: "3층 · 최대 4인 엔트리 티켓 포함", max: 4, price: 150000, bottles: 1, count: 3,
-      img: "tbl_standing.webp", items: ["보틀 1병"] },
+      img: "tbl_standing.webp", items: ["보틀 1병 + 얼음 + 물 + 토닉 2병"] },
     { id: "vip",      label: "VIP",      where: "4층 · 최대 4인 엔트리 티켓 포함", max: 4, price: 250000, bottles: 1, count: 5,
-      img: "tbl_vip.webp", items: ["보틀 1병 + 샴페인 2병", "나초 플레이트 1개 + 컵과일 1개", "물 3병"] },
+      img: "tbl_vip.webp", items: ["보틀 1병 + 샴페인 2병", "나초 플레이트 1개 + 컵과일 1개", "얼음 + 물 3병 + 토닉 2병"] },
     { id: "vvip",     label: "VVIP",     where: "4층 · 최대 6인 엔트리 티켓 포함", max: 6, price: 450000, bottles: 2, count: 1,
-      img: "tbl_vvip.webp", items: ["보틀 2병 + 샴페인 3병", "나초 플레이트 2개 + 컵과일 2개", "물 5병"] }
+      img: "tbl_vvip.webp", items: ["보틀 2병 + 샴페인 3병", "나초 플레이트 2개 + 컵과일 2개", "얼음 + 물 5병 + 토닉 2병"] }
   ],
 
   // DJ 타임테이블 [시작, 끝, 이름, 장르]
@@ -487,13 +490,19 @@ CONFIG.tables.forEach(x => tblSeg.insertAdjacentHTML("beforeend", `
       <span class="where">${x.where}</span>
       <span class="price">${won(x.price)}</span>
     </span>
-    ${x.img ? `<span class="img"><img src="${ROOT + x.img}" alt="" loading="lazy" onerror="this.parentNode.remove()"></span>` : ""}
+    ${x.img ? `<span class="img"><img src="${ROOT + x.img}" alt="" onload="this.closest('.pk-card').style.setProperty('--iw', (this.offsetWidth + 10) + 'px')" onerror="this.parentNode.remove()"></span>` : ""}
     <ul>${x.items.map(it => `<li>${it}</li>`).join("")}</ul>
   </label>`));
-$("#pkMeta").innerHTML = `
-  <div class="sp"><span class="k">Spirit options</span>${CONFIG.spiritsEn.map(s => `<b>${s}</b>`).join('<span style="color:var(--red-2)">/</span>')}</div>
-  <div><strong>기본 제공</strong> ${CONFIG.tableBasics} · VIP·VVIP는 기본 제공에 구성이 추가됩니다.</div>
-  <div>주류 병 수에 따라 스탠딩 / VIP / VVIP 테이블이 배정됩니다.</div>`;
+$("#pkSpirits").innerHTML = `<span class="k">Spirit options</span>${CONFIG.spiritsEn.map(s => `<b>${s}</b>`).join('<i>/</i>')}`;
+// 카드형 선택지: 숨겨진 라디오가 목록 맨 위에 있어 클릭 시 화면이 위로 튀는 것을 막음
+document.addEventListener("click", e => {
+  const l = e.target.closest(".seg label, .pk-list label");
+  if (!l) return;
+  const i = document.getElementById(l.htmlFor);
+  if (!i || i.disabled) return;
+  e.preventDefault();
+  if (!i.checked) { i.checked = true; i.dispatchEvent(new Event("change", { bubbles: true })); }
+});
 const tbl = () => CONFIG.tables.find(x => $("#tb-" + x.id).checked);
 let pax = 1;
 function renderBottles(){
@@ -501,7 +510,7 @@ function renderBottles(){
   const prev = [...box.querySelectorAll("select")].map(s => s.value);
   box.innerHTML = Array.from({ length: n }, (_, i) => `
     <select id="bottle${i}" aria-label="보틀 ${i + 1}" data-table-req>
-      <option value="" disabled ${prev[i] ? "" : "selected"}>${n > 1 ? "보틀 " + (i + 1) + " 선택" : "보틀 선택"}</option>
+      <option value="" disabled ${prev[i] ? "" : "selected"}>${n > 1 ? (i + 1) + "번째 보틀" : "보틀 종류"}</option>
       ${CONFIG.spirits.map(s => `<option ${prev[i] === s ? "selected" : ""}>${s}</option>`).join("")}
     </select>`).join("");
 }
