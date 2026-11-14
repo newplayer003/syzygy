@@ -27,6 +27,7 @@ const CSS = `
   color-scheme:dark;
 }
 *{box-sizing:border-box}
+[hidden]{display:none!important}
 html,body{margin:0;max-width:100%;overflow-x:hidden;overflow-x:clip}
 body{background:var(--bg);color:var(--fg);font-family:var(--kr);font-size:15px;line-height:1.6;-webkit-font-smoothing:antialiased;position:relative}
 .wrap{max-width:640px;margin:0 auto;padding-left:max(16px,env(safe-area-inset-left,0px));padding-right:max(16px,env(safe-area-inset-right,0px));padding-block:16px 72px;overflow:hidden}
@@ -55,6 +56,34 @@ body{background:var(--bg);color:var(--fg);font-family:var(--kr);font-size:15px;l
 .notice .lineup b.hl{color:var(--fg);white-space:normal}
 .notice .lineup b.hl .star{color:var(--red-2);font-style:normal}
 .notice .lineup b.hl .note{font:italic 300 12px var(--en);letter-spacing:.02em;white-space:nowrap;margin-left:5px}
+/* table packages */
+.pk{border-bottom:1px dashed var(--line)}
+.pk summary{list-style:none;cursor:pointer;padding:16px 28px;display:flex;align-items:center;gap:10px;flex-wrap:wrap}
+.pk summary::-webkit-details-marker{display:none}
+.pk summary .t{font:600 13px var(--en);letter-spacing:.2em;color:var(--fg)}
+.pk summary .from{font:500 12.5px var(--en);color:var(--fg-2);font-variant-numeric:tabular-nums}
+.pk summary .chev{margin-left:auto;font:500 11px var(--en);letter-spacing:.16em;color:var(--fg-2)}
+.pk summary .chev::after{content:"+";display:inline-block;margin-left:8px;font-size:15px;color:var(--red-2);transition:transform .2s}
+.pk[open] summary .chev::after{transform:rotate(45deg)}
+.pk summary:hover .chev{color:var(--fg)}
+.ltd{font:600 9.5px/1 var(--en);letter-spacing:.2em;color:#fff;background:var(--red);padding:5px 7px 4px}
+.pk-body{padding:0 28px 22px;display:grid;gap:10px}
+.pk-card{border:1px solid var(--line);padding:16px;display:grid;grid-template-columns:1fr auto;gap:4px 12px;align-items:baseline;background:#080707}
+.pk-card.top{border-color:var(--red-dim);background:linear-gradient(180deg,rgba(216,15,38,.10),rgba(216,15,38,.01))}
+.pk-card h4{margin:0;font:600 17px var(--en);letter-spacing:.12em;display:flex;gap:8px;align-items:center}
+.pk-card .price{font:600 17px var(--en);color:var(--red-2);font-variant-numeric:tabular-nums;white-space:nowrap}
+.pk-card .where{grid-column:1/-1;font-size:12px;color:var(--red-2)}
+.pk-card ul{grid-column:1/-1;margin:6px 0 0;padding:0 0 0 10px;border-left:2px solid var(--red);list-style:none;font-size:13px;line-height:1.7;color:var(--fg)}
+.pk-spirits{display:flex;flex-wrap:wrap;gap:6px 14px;align-items:baseline;padding:6px 0 0;font-size:12.5px}
+.pk-spirits .k{font:500 10px var(--en);letter-spacing:.2em;text-transform:uppercase;color:var(--red-2)}
+.pk-spirits b{font:500 12.5px var(--en);letter-spacing:.06em}
+.pk-info{margin:2px 0 0;padding:0;list-style:none;font-size:12.5px;color:var(--fg-2);line-height:1.8}
+.pk-info strong{color:var(--fg);font-weight:500}
+.pk-cta{margin-top:6px;height:46px;background:transparent;border:1px solid var(--red-2);color:var(--fg);cursor:pointer;font:500 13px var(--kr);letter-spacing:.04em;transition:all .2s}
+.pk-cta:hover{background:rgba(216,15,38,.15)}
+.tbl-sub{display:grid;gap:10px;margin-top:8px}
+.tbl-sub .lab{font-size:12.5px;color:var(--fg-2)}
+.bottles{display:grid;gap:10px}
 form{padding:8px 28px 28px;display:grid}
 .field{padding:20px 0;border-bottom:1px solid var(--line);display:grid;gap:10px;min-width:0}
 .field:last-of-type{border-bottom:0}
@@ -154,6 +183,11 @@ const HTML = `
       <span class="k">Line up</span><span class="lineup"><b>DPC</b> <b>D.KIM</b> <b>DJ No:biz</b> <b>JENNA KIM</b> <b>DJ Maple</b> <b>심섹시</b> <b>MIGNØ</b> <b>Linzi</b> <b>Elissa</b> <b>DJ Hondo</b></span>
     </div>
 
+    <details class="pk" id="pk">
+      <summary><span class="t">TABLE PACKAGES</span><span class="ltd">LIMITED</span><span class="from">₩150,000~</span><span class="chev">자세히</span></summary>
+      <div class="pk-body" id="pkBody"></div>
+    </details>
+
     <form id="form" novalidate>
       <div class="field">
         <label class="lab" for="name"><span class="n">01</span>이름 <span class="req">*</span></label>
@@ -195,6 +229,27 @@ const HTML = `
           <div class="amount">입금 금액<b id="totalPrice"></b></div>
         </div>
         <input type="hidden" id="qty" name="qty" value="1">
+      </div>
+
+      <div class="field" id="tableField" hidden>
+        <div class="lab"><span class="n">06</span>테이블 선택 <span class="req">*</span></div>
+        <div class="seg" id="tblSeg" role="radiogroup" aria-label="테이블 종류"></div>
+        <div class="tbl-sub">
+          <div class="lab">보틀 선택 <span class="req">*</span></div>
+          <div class="bottles" id="bottles"></div>
+        </div>
+        <div class="tbl-sub">
+          <div class="lab">인원 수 (대표자 포함) <span class="req">*</span></div>
+          <div class="qty">
+            <div class="step" role="group" aria-label="인원 수">
+              <button type="button" id="pMinus" aria-label="줄이기">−</button>
+              <output id="paxOut">1</output>
+              <button type="button" id="pPlus" aria-label="늘리기">+</button>
+            </div>
+            <div class="amount">입금 금액<b id="tblPrice"></b></div>
+          </div>
+          <p class="hint" id="paxHint"></p>
+        </div>
       </div>
 
       <div class="field">
@@ -274,8 +329,21 @@ const CONFIG = {
   tickets: [
     { id: "early",   label: "얼리버드", price: 15000, deadline: "2026-11-21", note: "11월 21일 (토)까지 · 환불 불가" },
     { id: "regular", label: "일반",     price: 20000, note: "11월 25일 (수) 자정까지 환불 가능 · 별도 문의" },
-    { id: "table",   label: "테이블 문의", price: null, note: "가격 및 예약은 별도 문의 · 11월 21일 (토) 자정까지 환불 가능" }
+    { id: "table",   label: "테이블", table: true, tag: "LIMITED", note: "엔트리 티켓 포함 · 11월 21일 (토) 자정까지 환불 가능" }
   ],
+
+  // 테이블 패키지. 매진되면 해당 항목에 soldOut: true 를 추가하세요.
+  tables: [
+    { id: "standing", label: "STANDING", where: "3층 · 최대 4인", max: 4, price: 150000, bottles: 1,
+      items: ["보틀 1병"] },
+    { id: "vip",      label: "VIP",      where: "4층 · 최대 4인", max: 4, price: 250000, bottles: 1,
+      items: ["보틀 1병 + 샴페인 2병", "나초 플레이트 1개 + 컵과일 1개", "물 3병"] },
+    { id: "vvip",     label: "VVIP",     where: "4층 · 최대 6인", max: 6, price: 450000, bottles: 2,
+      items: ["보틀 2병 + 샴페인 3병", "나초 플레이트 2개 + 컵과일 2개", "물 5병"] }
+  ],
+  spirits: ["보드카", "호세 쿠엘보", "제임슨"],
+  spiritsEn: ["VODKA", "JOSE CUERVO", "JAMESON"],
+  tableBasics: "잔 · 얼음 · 물 · 토닉 2병",
   maxQty: 10,
 
   affiliations: ["낯대 오리지널", "낯대 Y", "낯대 C", "DJ 지인"],
@@ -290,7 +358,8 @@ const CONFIG = {
     ["접수번호", "receipt"], ["접수일시", "timestamp"], ["이름", "name"], ["연락처", "phone"],
     ["소속", "affiliation"], ["초대자명", "inviter"], ["티켓 구분", "ticket"], ["구매 수", "qty"],
     ["입금 금액", "amount"], ["입금자명", "depositor"], ["입금자 은행", "bank"], ["예상 도착", "arrival"],
-    ["촬영 동의", "photoConsent"], ["입금 확인", "__checkbox"], ["비고", "__blank"], ["기기", "userAgent"], ["유입 경로", "source"]
+    ["촬영 동의", "photoConsent"], ["입금 확인", "__checkbox"], ["비고", "__blank"], ["기기", "userAgent"], ["유입 경로", "source"],
+    ["테이블 종류", "tableType"], ["보틀", "bottles"], ["인원", "pax"]
   ]
 };
 /* =================================================================== */
@@ -316,8 +385,8 @@ CONFIG.tickets.forEach((t, i) => {
   seg.insertAdjacentHTML("beforeend", `
     <input type="radio" id="t-${t.id}" name="ticket" value="${t.label}" ${closed ? "disabled" : ""}>
     <label for="t-${t.id}">
-      <strong>${t.label}${tag ? ` <span class="tag">${tag}</span>` : ""}</strong>
-      <span class="p">${t.price === null ? "별도 문의" : won(t.price)}</span>
+      <strong>${t.label}${tag ? ` <span class="tag">${tag}</span>` : ""}${t.tag ? ` <span class="ltd">${t.tag}</span>` : ""}</strong>
+      <span class="p">${t.table ? won(Math.min(...CONFIG.tables.map(x => x.price))) + "~" : t.price === null ? "별도 문의" : won(t.price)}</span>
       ${t.note ? `<span class="note">${t.note}</span>` : ""}
     </label>`);
 });
@@ -338,17 +407,69 @@ for (let m = CONFIG.event.startHour*60; m <= CONFIG.event.endHour*60; m += CONFI
 $("#acctNum").textContent = CONFIG.account.number;
 $("#acctBank").textContent = CONFIG.account.bank + " · 예금주 " + CONFIG.account.holder;
 
+// table packages (안내 블록)
+const tableTicket = CONFIG.tickets.find(t => t.table);
+$("#pkBody").innerHTML = CONFIG.tables.map((x, i) => `
+  <div class="pk-card${i === CONFIG.tables.length - 1 ? " top" : ""}">
+    <h4>${x.label}${x.soldOut ? ' <span class="ltd">SOLD OUT</span>' : ""}</h4><span class="price">${won(x.price).replace("원", "")}<small style="font-size:12px">원</small></span>
+    <span class="where">${x.where}</span>
+    <ul>${x.items.map(it => `<li>${it}</li>`).join("")}</ul>
+  </div>`).join("") + `
+  <div class="pk-spirits"><span class="k">Spirit options</span>${CONFIG.spiritsEn.map(s => `<b>${s}</b>`).join('<span style="color:var(--red-2)">/</span>')}</div>
+  <ul class="pk-info">
+    <li><strong>모든 테이블 구매 시 엔트리 티켓 포함</strong></li>
+    <li>기본 제공: ${CONFIG.tableBasics} · VIP·VVIP는 기본 제공에 구성이 추가됩니다</li>
+    <li>주류 병 수에 따라 스탠딩 / VIP / VVIP 테이블 배정 · 수량 한정</li>
+  </ul>
+  ${tableTicket ? '<button type="button" class="pk-cta" id="pkCta">테이블 예약하기</button>' : ""}`;
+
+// table form
+const tblSeg = $("#tblSeg");
+CONFIG.tables.forEach(x => tblSeg.insertAdjacentHTML("beforeend", `
+  <input type="radio" id="tb-${x.id}" name="tableType" value="${x.label}" ${x.soldOut ? "disabled" : ""}>
+  <label for="tb-${x.id}">
+    <strong>${x.label}${x.soldOut ? ' <span class="tag">SOLD OUT</span>' : ""}</strong>
+    <span class="p">${won(x.price)}</span>
+    <span class="note">${x.where} · ${x.items.join(" · ")}</span>
+  </label>`));
+const tbl = () => CONFIG.tables.find(x => $("#tb-" + x.id).checked);
+let pax = 1;
+function renderBottles(){
+  const n = tbl() ? tbl().bottles : 1, box = $("#bottles");
+  const prev = [...box.querySelectorAll("select")].map(s => s.value);
+  box.innerHTML = Array.from({ length: n }, (_, i) => `
+    <select id="bottle${i}" aria-label="보틀 ${i + 1}" data-table-req>
+      <option value="" disabled ${prev[i] ? "" : "selected"}>${n > 1 ? "보틀 " + (i + 1) + " 선택" : "보틀 선택"}</option>
+      ${CONFIG.spirits.map(s => `<option ${prev[i] === s ? "selected" : ""}>${s}</option>`).join("")}
+    </select>`).join("");
+}
+document.querySelectorAll("input[name=tableType]").forEach(r => r.addEventListener("change", () => { renderBottles(); render(); }));
+$("#pPlus").onclick = () => { const x = tbl(); if (pax < (x ? x.max : 6)) { pax++; render(); } };
+$("#pMinus").onclick = () => { if (pax > 1) { pax--; render(); } };
+renderBottles();
+
 // quantity + amount
 let qty = 1;
 function render(){
-  const t = ticket(), inquiry = !t || t.price === null;
+  const t = ticket(), isTable = !!(t && t.table), inquiry = !t || (!isTable && t.price == null);
+  $("#qtyField").hidden = isTable; $("#tableField").hidden = !isTable;
   $("#qtyOut").value = qty; $("#qty").value = qty;
   $("#totalPrice").textContent = inquiry ? "별도 문의" : won(t.price * qty);
   $("#plus").disabled = inquiry || qty >= CONFIG.maxQty;
   $("#minus").disabled = inquiry || qty <= 1;
+  const x = tbl(), max = x ? x.max : 6;
+  if (pax > max) pax = max;
+  $("#paxOut").value = pax;
+  $("#pPlus").disabled = !x || pax >= max; $("#pMinus").disabled = pax <= 1;
+  $("#tblPrice").textContent = x ? won(x.price) : "—";
+  $("#paxHint").textContent = x ? `${x.label} 최대 ${x.max}인 · 인원 수와 관계없이 테이블 금액만 입금하시면 됩니다.` : "테이블을 먼저 선택해 주세요.";
 }
 $("#plus").onclick = () => { if (qty < CONFIG.maxQty) { qty++; render(); } };
 $("#minus").onclick = () => { if (qty > 1) { qty--; render(); } };
+if ($("#pkCta")) $("#pkCta").onclick = () => {
+  $("#t-" + tableTicket.id).checked = true; render();
+  $("#tableField").scrollIntoView({ behavior: "smooth", block: "center" });
+};
 document.querySelectorAll("input[name=ticket]").forEach(r => r.addEventListener("change", render));
 render();
 
@@ -367,7 +488,7 @@ $("#shareBtn").onclick = async () => {
 
 $("#againBtn").onclick = () => {
   const form = $("#form");
-  form.reset(); qty = 1;
+  form.reset(); qty = 1; pax = 1; renderBottles();
   if (firstOpen) $("#t-" + firstOpen.id).checked = true;
   render();
   $("#doneText").innerHTML = "신청이 접수되었습니다.<br>입금 확인 후 안내 문자를 드릴게요.";
@@ -399,6 +520,10 @@ $("#form").addEventListener("submit", async e => {
     if (!el.checkValidity()) { el.closest(".field, .consent")?.classList.add("invalid"); if (!bad) bad = el; }
   }
   if (!ticket()) { bad = bad || $("#seg"); $("#seg").closest(".field").classList.add("invalid"); }
+  if (ticket() && ticket().table) {
+    const empty = [...document.querySelectorAll("[data-table-req]")].find(s => !s.value);
+    if (!tbl() || empty) { $("#tableField").classList.add("invalid"); bad = bad || (tbl() ? empty : $("#tblSeg")); }
+  }
   if (bad) { msg.textContent = "필수 항목을 확인해 주세요."; msg.classList.add("err"); bad.focus?.(); return; }
 
   const t = ticket();
@@ -413,8 +538,11 @@ $("#form").addEventListener("submit", async e => {
     affiliation: $("#affiliation").value,
     inviter: $("#inviter").value.trim(),
     ticket: t.label,
-    qty: t.price === null ? 0 : qty,
-    amount: t.price === null ? 0 : t.price * qty,
+    qty: t.table ? 1 : t.price == null ? 0 : qty,
+    amount: t.table ? tbl().price : t.price == null ? 0 : t.price * qty,
+    tableType: t.table ? tbl().label : "",
+    bottles: t.table ? [...document.querySelectorAll("[data-table-req]")].map(s => s.value).join(", ") : "",
+    pax: t.table ? pax : "",
     depositor: $("#depositor").value.trim(),
     bank: $("#bank").value,
     arrival: $("#arrival").value,
@@ -432,7 +560,7 @@ $("#form").addEventListener("submit", async e => {
       const sent = fetch(CONFIG.endpoint, { method: "POST", mode: "no-cors", keepalive: true, headers: { "Content-Type": "text/plain;charset=utf-8" }, body });
       await Promise.race([sent, new Promise(r => setTimeout(r, 600))]);
     } else { await new Promise(r => setTimeout(r, 500)); }
-    if (t.price === null) $("#doneText").innerHTML = "테이블 문의가 접수되었습니다.<br>가격과 예약 안내를 연락드릴게요.";
+    if (t.table) $("#doneText").innerHTML = `${tbl().label} 테이블 예약이 접수되었습니다.<br>입금 확인 후 테이블 배정 안내를 드릴게요.`;
     $("#doneNum").textContent = "NO. " + receipt;
     $("#ticket").classList.add("ok");
     $("#ticket").scrollIntoView({ behavior: "smooth", block: "start" });
