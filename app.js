@@ -57,7 +57,18 @@ body{background:var(--bg);color:var(--fg);font-family:var(--kr);font-size:15px;l
 .notice .lineup b.hl .star{color:var(--red-2);font-style:normal}
 .notice .lineup b.hl .note{font:italic 300 12px var(--en);letter-spacing:.02em;white-space:nowrap;margin-left:5px}
 /* time table */
-.tt{padding:18px 28px 20px;border-bottom:1px dashed var(--line)}
+.tt{border-bottom:1px dashed var(--line)}
+.tt summary{list-style:none;cursor:pointer;padding:16px 28px;display:flex;align-items:center;gap:10px;flex-wrap:wrap}
+.tt summary::-webkit-details-marker{display:none}
+.tt summary .t{font:600 13px var(--en);letter-spacing:.2em;color:var(--fg)}
+.tt summary .sub{font:500 11.5px var(--en);letter-spacing:.06em;color:var(--fg-2)}
+.tt summary .chev{margin-left:auto;font:500 11px var(--kr);letter-spacing:.06em;color:var(--fg-2)}
+.tt summary .chev::after{content:"+";display:inline-block;margin-left:8px;font-size:15px;color:var(--red-2);transition:transform .2s}
+.tt[open] summary .chev::after{transform:rotate(45deg)}
+.tt summary:hover .chev{color:var(--fg)}
+.tt .tt-list{padding:0 28px 16px}
+.tt-quiz{padding:14px 28px 18px;border-bottom:1px dashed var(--line)}
+.tt-quiz .quiz-cta{margin-top:0}
 .tt-head{display:flex;justify-content:space-between;align-items:baseline;gap:10px;margin-bottom:10px}
 .tt-head .k{font:500 10px var(--en);letter-spacing:.2em;text-transform:uppercase;color:var(--red-2)}
 .tt-head small{font:400 11px var(--en);letter-spacing:.14em;color:var(--fg-2)}
@@ -83,7 +94,6 @@ body{background:var(--bg);color:var(--fg);font-family:var(--kr);font-size:15px;l
 .pk-head{display:flex;flex-wrap:wrap;align-items:center;gap:6px 10px;margin-top:8px;padding-top:14px;border-top:1px dashed var(--line)}
 .pk-head .t{font:600 12px var(--en);letter-spacing:.2em;color:var(--fg)}
 .pk-head small{flex-basis:100%;font-size:12px;color:var(--fg-2)}
-.seg .is-table{display:none}
 .pk-list input{position:absolute;opacity:0;width:0;height:0}
 .pk-card{cursor:pointer;border:1px solid var(--line);background:#080707;display:grid;grid-template-columns:1fr auto;gap:0 10px;position:relative;overflow:hidden;transition:border-color .2s,background .2s;min-width:0}
 .pk-card .txt{padding:14px 0 4px 16px;display:grid;gap:3px;align-content:start;min-width:0}
@@ -100,6 +110,7 @@ body{background:var(--bg);color:var(--fg);font-family:var(--kr);font-size:15px;l
 .pk-list input:disabled+.pk-card{opacity:.45;cursor:not-allowed}
 .pk-list input:focus-visible+.pk-card{outline:2px solid var(--red-2);outline-offset:3px}
 .pk-head.invalid~.pk-list .pk-card{border-color:var(--err)}
+#pkWrap{display:grid;gap:10px}
 .pk-meta{display:grid;gap:6px;font-size:12.5px;color:var(--fg-2);line-height:1.6}
 .pk-meta .sp{display:flex;flex-wrap:wrap;gap:4px 12px;align-items:baseline}
 .pk-meta .sp .k{font:500 10px var(--en);letter-spacing:.2em;text-transform:uppercase;color:var(--red-2)}
@@ -208,9 +219,11 @@ const HTML = `
       <span class="k">Line up</span><span class="lineup"><b>DPC</b> <b>D.KIM</b> <b>DJ No:biz</b> <b>JENNA KIM</b> <b>DJ Maple</b> <b>심섹시</b> <b>MIGNØ</b> <b>Linzi</b> <b>Elissa</b> <b>DJ Hondo</b></span>
     </div>
 
-    <div class="tt" id="timetable">
-      <div class="tt-head"><span class="k">Time table</span><small>11.28 SAT · 18:00 – 23:00</small></div>
+    <details class="tt" id="timetable">
+      <summary><span class="t">DJ TIME TABLE</span><span class="sub">18:00 – 23:00</span><span class="chev">자세히</span></summary>
       <ol class="tt-list" id="ttList"></ol>
+    </details>
+    <div class="tt-quiz">
       <a class="quiz-cta" id="quizCta" target="_blank" rel="noopener"><span>내 취향에 맞는 DJ 찾기<small>질문 8개로 알아보는 음악 취향 테스트</small></span><i>TEST →</i></a>
     </div>
 
@@ -241,9 +254,11 @@ const HTML = `
       <div class="field">
         <div class="lab"><span class="n">05</span>티켓 구분 <span class="req">*</span></div>
         <div class="seg" id="seg" role="radiogroup" aria-label="티켓 구분"></div>
-        <div class="pk-head" id="pkField"><span class="t">TABLE PACKAGES</span><span class="ltd">LIMITED</span><small>엔트리 티켓 포함 · 11월 21일 (토) 자정까지 환불 가능</small></div>
-        <div class="pk-list" id="tblSeg" role="radiogroup" aria-label="테이블 패키지"></div>
-        <div class="pk-meta" id="pkMeta"></div>
+        <div id="pkWrap" hidden>
+          <div class="pk-head" id="pkField"><span class="t">TABLE PACKAGES</span><small>원하는 테이블을 선택해 주세요.</small></div>
+          <div class="pk-list" id="tblSeg" role="radiogroup" aria-label="테이블 패키지"></div>
+          <div class="pk-meta" id="pkMeta"></div>
+        </div>
         <p class="hint">모든 티켓에 프리드링크 1잔이 포함됩니다.</p>
       </div>
 
@@ -261,7 +276,7 @@ const HTML = `
       </div>
 
       <div class="field" id="tableField" hidden>
-        <div class="lab"><span class="n">06</span>테이블 예약 정보 <span class="req">*</span></div>
+        <div class="lab"><span class="n">06</span>보틀 · 인원 선택 <span class="req">*</span></div>
         <p class="hint" id="tblChosen"></p>
         <div class="tbl-sub">
           <div class="lab">보틀 선택 <span class="req">*</span></div>
@@ -360,18 +375,18 @@ const CONFIG = {
   tickets: [
     { id: "early",   label: "얼리버드", price: 15000, deadline: "2026-11-21", note: "11월 21일 (토)까지 · 환불 불가" },
     { id: "regular", label: "일반",     price: 20000, note: "11월 25일 (수) 자정까지 환불 가능 · 별도 문의" },
-    { id: "table",   label: "테이블", table: true, tag: "LIMITED", note: "엔트리 티켓 포함 · 11월 21일 (토) 자정까지 환불 가능" }
+    { id: "table",   label: "테이블", table: true, note: "엔트리 티켓 포함 · 11월 21일 (토) 자정까지 환불 가능" }
   ],
 
-  // 테이블 패키지. count: 운영 테이블 수(화면에 표시). 매진되면 soldOut: true 를 추가하세요.
+  // 테이블 패키지. count: 운영 테이블 수(관리용, 화면에는 표시 안 함). 매진되면 soldOut: true 를 추가하세요.
   // img: 저장소 루트의 이미지 파일 (없으면 이미지 없이 표시)
   // ※ VVIP(6인)를 2개로 운영하면 VIP(3-4인) 수량이 줄어드니 count 를 함께 바꿔주세요.
   tables: [
-    { id: "standing", label: "STANDING", where: "3층 바테이블 · 최대 4인", max: 4, price: 150000, bottles: 1, count: 3,
+    { id: "standing", label: "STANDING", where: "3층 · 최대 4인 엔트리 티켓 포함", max: 4, price: 150000, bottles: 1, count: 3,
       img: "tbl_standing.webp", items: ["보틀 1병"] },
-    { id: "vip",      label: "VIP",      where: "복층 · 3–4인 테이블 · 최대 4인", max: 4, price: 250000, bottles: 1, count: 5,
+    { id: "vip",      label: "VIP",      where: "4층 · 최대 4인 엔트리 티켓 포함", max: 4, price: 250000, bottles: 1, count: 5,
       img: "tbl_vip.webp", items: ["보틀 1병 + 샴페인 2병", "나초 플레이트 1개 + 컵과일 1개", "물 3병"] },
-    { id: "vvip",     label: "VVIP",     where: "복층 · 6인 테이블 · 최대 6인", max: 6, price: 450000, bottles: 2, count: 1,
+    { id: "vvip",     label: "VVIP",     where: "4층 · 최대 6인 엔트리 티켓 포함", max: 6, price: 450000, bottles: 2, count: 1,
       img: "tbl_vvip.webp", items: ["보틀 2병 + 샴페인 3병", "나초 플레이트 2개 + 컵과일 2개", "물 5병"] }
   ],
 
@@ -379,11 +394,11 @@ const CONFIG = {
   timetable: [
     ["18:00", "18:30", "SIMSEXY",   "Jazzy Hip-hop / Soul"],
     ["18:30", "19:00", "DJ MAPLE",  "Tech House"],
-    ["19:00", "19:30", "MIGNØ",     "French Nu-Disco"],
+    ["19:00", "19:30", "MIGNØ",     "French Electronic"],
     ["19:30", "20:00", "HONDO",     "Pop EDM"],
     ["20:00", "20:30", "DJ NO:BIZ", "K·J Indie Pop"],
     ["20:30", "21:00", "JENNA KIM", "Lo-fi House"],
-    ["21:00", "21:30", "LINZI",     "K-pop × Hip-hop × R&B"],
+    ["21:00", "21:30", "LINZI",     "Hip-Hop × K-pop"],
     ["21:30", "22:00", "ELISSA",    "90s R&B → Trap"],
     ["22:00", "22:30", "D.KIM",     "Acid / Hard Techno"],
     ["22:30", "23:00", "DPC",       "French Electro"]
@@ -473,7 +488,6 @@ CONFIG.tables.forEach(x => tblSeg.insertAdjacentHTML("beforeend", `
       <h4>${x.label}${x.soldOut ? ' <span class="ltd">SOLD OUT</span>' : ""}</h4>
       <span class="where">${x.where}</span>
       <span class="price">${won(x.price)}</span>
-      ${x.count ? `<span class="cnt">LIMITED · <b>${x.count}</b> TABLE${x.count > 1 ? "S" : ""} ONLY</span>` : ""}
     </span>
     ${x.img ? `<span class="img"><img src="${ROOT + x.img}" alt="" loading="lazy" onerror="this.parentNode.remove()"></span>` : ""}
     <ul>${x.items.map(it => `<li>${it}</li>`).join("")}</ul>
@@ -519,7 +533,8 @@ function render(){
   $("#paxOut").value = pax;
   $("#pPlus").disabled = !x || pax >= max; $("#pMinus").disabled = pax <= 1;
   $("#tblPrice").textContent = x ? won(x.price) : "—";
-  $("#tblChosen").innerHTML = x ? `선택한 테이블: <b style="color:var(--fg)">${x.label}</b> · ${x.where}` : "";
+  $("#pkWrap").hidden = !isTable;
+  $("#tblChosen").innerHTML = x ? `선택한 테이블: <b style="color:var(--fg)">${x.label}</b> · ${x.where}` : "05에서 테이블 패키지를 먼저 선택해 주세요.";
   $("#paxHint").textContent = x ? `${x.label} 최대 ${x.max}인 · 인원 수와 관계없이 테이블 금액만 입금하시면 됩니다.` : "테이블을 먼저 선택해 주세요.";
 }
 $("#plus").onclick = () => { if (qty < CONFIG.maxQty) { qty++; render(); } };
