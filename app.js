@@ -79,7 +79,11 @@ body{background:var(--bg);color:var(--fg);font-family:var(--kr);font-size:15px;l
 
 /* table packages (inside form) */
 .ltd{font:600 9.5px/1 var(--en);letter-spacing:.2em;color:#fff;background:var(--red);padding:5px 7px 4px}
-.pk-list{display:grid;gap:10px}
+.pk-list{display:grid;gap:8px}
+.pk-head{display:flex;flex-wrap:wrap;align-items:center;gap:6px 10px;margin-top:8px;padding-top:14px;border-top:1px dashed var(--line)}
+.pk-head .t{font:600 12px var(--en);letter-spacing:.2em;color:var(--fg)}
+.pk-head small{flex-basis:100%;font-size:12px;color:var(--fg-2)}
+.seg .is-table{display:none}
 .pk-list input{position:absolute;opacity:0;width:0;height:0}
 .pk-card{cursor:pointer;border:1px solid var(--line);background:#080707;display:grid;grid-template-columns:1fr auto;gap:0 10px;position:relative;overflow:hidden;transition:border-color .2s,background .2s;min-width:0}
 .pk-card .txt{padding:14px 0 4px 16px;display:grid;gap:3px;align-content:start;min-width:0}
@@ -95,7 +99,7 @@ body{background:var(--bg);color:var(--fg);font-family:var(--kr);font-size:15px;l
 .pk-list input:checked+.pk-card h4::after{content:" ✓";color:var(--red-2)}
 .pk-list input:disabled+.pk-card{opacity:.45;cursor:not-allowed}
 .pk-list input:focus-visible+.pk-card{outline:2px solid var(--red-2);outline-offset:3px}
-.field.invalid .pk-card{border-color:var(--err)}
+.pk-head.invalid~.pk-list .pk-card{border-color:var(--err)}
 .pk-meta{display:grid;gap:6px;font-size:12.5px;color:var(--fg-2);line-height:1.6}
 .pk-meta .sp{display:flex;flex-wrap:wrap;gap:4px 12px;align-items:baseline}
 .pk-meta .sp .k{font:500 10px var(--en);letter-spacing:.2em;text-transform:uppercase;color:var(--red-2)}
@@ -237,14 +241,10 @@ const HTML = `
       <div class="field">
         <div class="lab"><span class="n">05</span>티켓 구분 <span class="req">*</span></div>
         <div class="seg" id="seg" role="radiogroup" aria-label="티켓 구분"></div>
-        <p class="hint">모든 티켓에 프리드링크 1잔이 포함됩니다.</p>
-      </div>
-
-      <div class="field" id="pkField">
-        <div class="lab"><span class="n">TABLE</span>테이블 패키지 <span class="ltd">LIMITED</span></div>
-        <p class="hint">모든 테이블은 엔트리 티켓 포함 · 원하는 테이블을 누르면 테이블 예약으로 바뀝니다.</p>
+        <div class="pk-head" id="pkField"><span class="t">TABLE PACKAGES</span><span class="ltd">LIMITED</span><small>엔트리 티켓 포함 · 11월 21일 (토) 자정까지 환불 가능</small></div>
         <div class="pk-list" id="tblSeg" role="radiogroup" aria-label="테이블 패키지"></div>
         <div class="pk-meta" id="pkMeta"></div>
+        <p class="hint">모든 티켓에 프리드링크 1잔이 포함됩니다.</p>
       </div>
 
       <div class="field" id="qtyField">
@@ -431,8 +431,8 @@ CONFIG.tickets.forEach((t, i) => {
   const closed = t.deadline && today > new Date(t.deadline + "T23:59:59");
   const tag = closed ? "CLOSED" : (t.deadline ? "~" + t.deadline.slice(5).replace("-", ".") : "");
   seg.insertAdjacentHTML("beforeend", `
-    <input type="radio" id="t-${t.id}" name="ticket" value="${t.label}" ${closed ? "disabled" : ""}>
-    <label for="t-${t.id}">
+    <input type="radio" id="t-${t.id}" name="ticket" value="${t.label}" ${closed ? "disabled" : ""}${t.table ? ' class="is-table"' : ""}>
+    <label for="t-${t.id}"${t.table ? ' class="is-table"' : ""}>
       <strong>${t.label}${tag ? ` <span class="tag">${tag}</span>` : ""}${t.tag ? ` <span class="ltd">${t.tag}</span>` : ""}</strong>
       <span class="p">${t.table ? won(Math.min(...CONFIG.tables.map(x => x.price))) + "~" : t.price === null ? "별도 문의" : won(t.price)}</span>
       ${t.note ? `<span class="note">${t.note}</span>` : ""}
@@ -519,7 +519,7 @@ function render(){
   $("#paxOut").value = pax;
   $("#pPlus").disabled = !x || pax >= max; $("#pMinus").disabled = pax <= 1;
   $("#tblPrice").textContent = x ? won(x.price) : "—";
-  $("#tblChosen").innerHTML = x ? `선택한 테이블: <b style="color:var(--fg)">${x.label}</b> · ${x.where}` : '위 <b style="color:var(--fg)">테이블 패키지</b>에서 원하는 테이블을 선택해 주세요.';
+  $("#tblChosen").innerHTML = x ? `선택한 테이블: <b style="color:var(--fg)">${x.label}</b> · ${x.where}` : "";
   $("#paxHint").textContent = x ? `${x.label} 최대 ${x.max}인 · 인원 수와 관계없이 테이블 금액만 입금하시면 됩니다.` : "테이블을 먼저 선택해 주세요.";
 }
 $("#plus").onclick = () => { if (qty < CONFIG.maxQty) { qty++; render(); } };
@@ -568,7 +568,7 @@ $("#form").addEventListener("submit", async e => {
   e.preventDefault();
   const form = e.target, msg = $("#msg"), btn = $("#submitBtn");
   msg.textContent = ""; msg.classList.remove("err");
-  document.querySelectorAll(".field").forEach(f => f.classList.remove("invalid"));
+  document.querySelectorAll(".field, .pk-head").forEach(f => f.classList.remove("invalid"));
   let bad = null;
   for (const el of form.querySelectorAll("[required]")) {
     if (!el.checkValidity()) { el.closest(".field, .consent")?.classList.add("invalid"); if (!bad) bad = el; }
