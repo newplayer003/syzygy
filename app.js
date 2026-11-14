@@ -73,11 +73,12 @@ body{background:var(--bg);color:var(--fg);font-family:var(--kr);font-size:15px;l
 .tt-head .k{font:500 10px var(--en);letter-spacing:.2em;text-transform:uppercase;color:var(--red-2)}
 .tt-head small{font:400 11px var(--en);letter-spacing:.14em;color:var(--fg-2)}
 .tt-list{list-style:none;margin:0;padding:0}
-.tt-list li{display:grid;grid-template-columns:88px 1fr;gap:0 12px;align-items:baseline;padding:8px 0;border-top:1px solid #1a1616}
+.tt-list li{display:grid;grid-template-columns:88px 1fr;gap:0 12px;align-items:baseline;padding:7px 0;border-top:1px solid #1a1616}
+.tt-list .nm{display:flex;flex-wrap:wrap;align-items:baseline;gap:0 8px;min-width:0}
 .tt-list li:first-child{border-top:0}
 .tt-list time{font:500 12px var(--en);letter-spacing:.04em;color:var(--fg-2);font-variant-numeric:tabular-nums;white-space:nowrap}
-.tt-list b{font:600 13.5px var(--en);letter-spacing:.1em;color:var(--fg)}
-.tt-list .g{grid-column:2;font-size:11.5px;color:var(--fg-2);margin-top:1px}
+.tt-list b{font:600 13px var(--en);letter-spacing:.08em;color:var(--fg);white-space:nowrap}
+.tt-list .g{font-size:11.5px;color:var(--fg-2);white-space:nowrap}
 .tt-list .star{color:var(--red-2);margin-left:6px;font-weight:400}
 .tt-list li.me{border-left:2px solid var(--red);padding-left:10px;margin-left:-12px}
 .quiz-cta{display:flex;align-items:center;justify-content:space-between;gap:12px;margin-top:14px;padding:14px 16px;border:1px solid var(--red-2);color:var(--fg);text-decoration:none;
@@ -475,7 +476,7 @@ $("#acctBank").textContent = CONFIG.account.bank + " · 예금주 " + CONFIG.acc
 const hlName = PAGE.highlight && PAGE.highlight.name ? PAGE.highlight.name.toUpperCase() : "";
 $("#ttList").innerHTML = CONFIG.timetable.map(([a, b, n, g]) => {
   const me = hlName && n.toUpperCase().includes(hlName);
-  return `<li${me ? ' class="me"' : ""}><time>${a} – ${b}</time><b>${n}${me ? '<span class="star">★</span>' : ""}</b><span class="g">${g}</span></li>`;
+  return `<li${me ? ' class="me"' : ""}><time>${a} – ${b}</time><span class="nm"><b>${n}${me ? '<span class="star">★</span>' : ""}</b><span class="g">${g}</span></span></li>`;
 }).join("");
 $("#quizCtaDone").href = CONFIG.testUrl;
 
