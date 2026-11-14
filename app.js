@@ -221,7 +221,7 @@ const HTML = `
     <div class="notice">
       <span class="k">Dress code</span><span>ALL BLACK + RED POINT <em>(권장)</em></span>
       <span class="k">Age</span><span>19+ only</span>
-      <span class="k">Line up</span><span class="lineup"><b>DPC</b> <b>D.KIM</b> <b>DJ No:biz</b> <b>JENNA KIM</b> <b>DJ Maple</b> <b>심섹시</b> <b>MIGNØ</b> <b>Linzi</b> <b>Elissa</b> <b>DJ Hondo</b></span>
+      <span class="k">Line up</span><span class="lineup"><b>DPC</b> <b>D.KIM</b> <b>DJ No:biz</b> <b>JENNA KIM</b> <b>DJ Maple</b> <b>SIMSEXY</b> <b>MIGNØ</b> <b>Linzi</b> <b>Elissa</b> <b>DJ Hondo</b></span>
     </div>
 
     <details class="tt" id="timetable">
