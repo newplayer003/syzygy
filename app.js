@@ -56,31 +56,52 @@ body{background:var(--bg);color:var(--fg);font-family:var(--kr);font-size:15px;l
 .notice .lineup b.hl{color:var(--fg);white-space:normal}
 .notice .lineup b.hl .star{color:var(--red-2);font-style:normal}
 .notice .lineup b.hl .note{font:italic 300 12px var(--en);letter-spacing:.02em;white-space:nowrap;margin-left:5px}
-/* table packages */
-.pk{border-bottom:1px dashed var(--line)}
-.pk summary{list-style:none;cursor:pointer;padding:16px 28px;display:flex;align-items:center;gap:10px;flex-wrap:wrap}
-.pk summary::-webkit-details-marker{display:none}
-.pk summary .t{font:600 13px var(--en);letter-spacing:.2em;color:var(--fg)}
-.pk summary .from{font:500 12.5px var(--en);color:var(--fg-2);font-variant-numeric:tabular-nums}
-.pk summary .chev{margin-left:auto;font:500 11px var(--en);letter-spacing:.16em;color:var(--fg-2)}
-.pk summary .chev::after{content:"+";display:inline-block;margin-left:8px;font-size:15px;color:var(--red-2);transition:transform .2s}
-.pk[open] summary .chev::after{transform:rotate(45deg)}
-.pk summary:hover .chev{color:var(--fg)}
+/* time table */
+.tt{padding:18px 28px 20px;border-bottom:1px dashed var(--line)}
+.tt-head{display:flex;justify-content:space-between;align-items:baseline;gap:10px;margin-bottom:10px}
+.tt-head .k{font:500 10px var(--en);letter-spacing:.2em;text-transform:uppercase;color:var(--red-2)}
+.tt-head small{font:400 11px var(--en);letter-spacing:.14em;color:var(--fg-2)}
+.tt-list{list-style:none;margin:0;padding:0}
+.tt-list li{display:grid;grid-template-columns:88px 1fr;gap:0 12px;align-items:baseline;padding:8px 0;border-top:1px solid #1a1616}
+.tt-list li:first-child{border-top:0}
+.tt-list time{font:500 12px var(--en);letter-spacing:.04em;color:var(--fg-2);font-variant-numeric:tabular-nums;white-space:nowrap}
+.tt-list b{font:600 13.5px var(--en);letter-spacing:.1em;color:var(--fg)}
+.tt-list .g{grid-column:2;font-size:11.5px;color:var(--fg-2);margin-top:1px}
+.tt-list .star{color:var(--red-2);margin-left:6px;font-weight:400}
+.tt-list li.me{border-left:2px solid var(--red);padding-left:10px;margin-left:-12px}
+.quiz-cta{display:flex;align-items:center;justify-content:space-between;gap:12px;margin-top:14px;padding:14px 16px;border:1px solid var(--red-2);color:var(--fg);text-decoration:none;
+  background:linear-gradient(90deg,rgba(216,15,38,.16),rgba(216,15,38,.02));transition:background .2s}
+.quiz-cta:hover{background:linear-gradient(90deg,rgba(216,15,38,.28),rgba(216,15,38,.06))}
+.quiz-cta span{display:grid;gap:2px;font-size:14px;font-weight:600;text-align:left}
+.quiz-cta small{font-size:11.5px;font-weight:400;color:var(--fg-2)}
+.quiz-cta i{font:500 11px var(--en);letter-spacing:.16em;font-style:normal;color:var(--red-2);white-space:nowrap}
+.done .quiz-cta{max-width:360px;margin:26px auto 0}
+
+/* table packages (inside form) */
 .ltd{font:600 9.5px/1 var(--en);letter-spacing:.2em;color:#fff;background:var(--red);padding:5px 7px 4px}
-.pk-body{padding:0 28px 22px;display:grid;gap:10px}
-.pk-card{border:1px solid var(--line);padding:16px;display:grid;grid-template-columns:1fr auto;gap:4px 12px;align-items:baseline;background:#080707}
-.pk-card.top{border-color:var(--red-dim);background:linear-gradient(180deg,rgba(216,15,38,.10),rgba(216,15,38,.01))}
-.pk-card h4{margin:0;font:600 17px var(--en);letter-spacing:.12em;display:flex;gap:8px;align-items:center}
-.pk-card .price{font:600 17px var(--en);color:var(--red-2);font-variant-numeric:tabular-nums;white-space:nowrap}
-.pk-card .where{grid-column:1/-1;font-size:12px;color:var(--red-2)}
-.pk-card ul{grid-column:1/-1;margin:6px 0 0;padding:0 0 0 10px;border-left:2px solid var(--red);list-style:none;font-size:13px;line-height:1.7;color:var(--fg)}
-.pk-spirits{display:flex;flex-wrap:wrap;gap:6px 14px;align-items:baseline;padding:6px 0 0;font-size:12.5px}
-.pk-spirits .k{font:500 10px var(--en);letter-spacing:.2em;text-transform:uppercase;color:var(--red-2)}
-.pk-spirits b{font:500 12.5px var(--en);letter-spacing:.06em}
-.pk-info{margin:2px 0 0;padding:0;list-style:none;font-size:12.5px;color:var(--fg-2);line-height:1.8}
-.pk-info strong{color:var(--fg);font-weight:500}
-.pk-cta{margin-top:6px;height:46px;background:transparent;border:1px solid var(--red-2);color:var(--fg);cursor:pointer;font:500 13px var(--kr);letter-spacing:.04em;transition:all .2s}
-.pk-cta:hover{background:rgba(216,15,38,.15)}
+.pk-list{display:grid;gap:10px}
+.pk-list input{position:absolute;opacity:0;width:0;height:0}
+.pk-card{cursor:pointer;border:1px solid var(--line);background:#080707;display:grid;grid-template-columns:1fr auto;gap:0 10px;position:relative;overflow:hidden;transition:border-color .2s,background .2s;min-width:0}
+.pk-card .txt{padding:14px 0 4px 16px;display:grid;gap:3px;align-content:start;min-width:0}
+.pk-card h4{margin:0;font:600 16px var(--en);letter-spacing:.12em}
+.pk-card .where{font-size:12px;color:var(--red-2);white-space:nowrap}
+.pk-card .price{font:600 17px var(--en);color:var(--fg);font-variant-numeric:tabular-nums;margin-top:2px}
+.pk-card ul{grid-column:1/-1;margin:8px 16px 14px;padding:0 0 0 9px;border-left:2px solid var(--red);list-style:none;font-size:12.5px;line-height:1.6;color:var(--fg)}
+.pk-card .cnt{font:500 10px var(--en);letter-spacing:.14em;color:var(--fg-2);margin-top:4px;white-space:nowrap}
+.pk-card .cnt b{color:var(--red-2);font-weight:600}
+.pk-card .img{align-self:end;width:46vw;max-width:200px;display:flex;align-items:flex-end;justify-content:flex-end;padding:10px 6px 0 0}
+.pk-card .img img{width:100%;height:auto;max-height:104px;object-fit:contain;object-position:right bottom;display:block;-webkit-mask:linear-gradient(to right,transparent,#000 18%);mask:linear-gradient(to right,transparent,#000 18%)}
+.pk-list input:checked+.pk-card{border-color:var(--red-2);background:linear-gradient(180deg,rgba(216,15,38,.14),rgba(216,15,38,.02))}
+.pk-list input:checked+.pk-card h4::after{content:" ✓";color:var(--red-2)}
+.pk-list input:disabled+.pk-card{opacity:.45;cursor:not-allowed}
+.pk-list input:focus-visible+.pk-card{outline:2px solid var(--red-2);outline-offset:3px}
+.field.invalid .pk-card{border-color:var(--err)}
+.pk-meta{display:grid;gap:6px;font-size:12.5px;color:var(--fg-2);line-height:1.6}
+.pk-meta .sp{display:flex;flex-wrap:wrap;gap:4px 12px;align-items:baseline}
+.pk-meta .sp .k{font:500 10px var(--en);letter-spacing:.2em;text-transform:uppercase;color:var(--red-2)}
+.pk-meta .sp b{font:500 12px var(--en);letter-spacing:.06em;color:var(--fg)}
+.pk-meta strong{color:var(--fg);font-weight:500}
+@media (max-width:380px){.pk-card .img img{max-height:84px}.tt-list li{grid-template-columns:78px 1fr}}
 .tbl-sub{display:grid;gap:10px;margin-top:8px}
 .tbl-sub .lab{font-size:12.5px;color:var(--fg-2)}
 .bottles{display:grid;gap:10px}
@@ -183,10 +204,11 @@ const HTML = `
       <span class="k">Line up</span><span class="lineup"><b>DPC</b> <b>D.KIM</b> <b>DJ No:biz</b> <b>JENNA KIM</b> <b>DJ Maple</b> <b>심섹시</b> <b>MIGNØ</b> <b>Linzi</b> <b>Elissa</b> <b>DJ Hondo</b></span>
     </div>
 
-    <details class="pk" id="pk">
-      <summary><span class="t">TABLE PACKAGES</span><span class="ltd">LIMITED</span><span class="from">₩150,000~</span><span class="chev">자세히</span></summary>
-      <div class="pk-body" id="pkBody"></div>
-    </details>
+    <div class="tt" id="timetable">
+      <div class="tt-head"><span class="k">Time table</span><small>11.28 SAT · 18:00 – 23:00</small></div>
+      <ol class="tt-list" id="ttList"></ol>
+      <a class="quiz-cta" id="quizCta" target="_blank" rel="noopener"><span>내 취향에 맞는 DJ 찾기<small>질문 8개로 알아보는 음악 취향 테스트</small></span><i>TEST →</i></a>
+    </div>
 
     <form id="form" novalidate>
       <div class="field">
@@ -218,6 +240,13 @@ const HTML = `
         <p class="hint">모든 티켓에 프리드링크 1잔이 포함됩니다.</p>
       </div>
 
+      <div class="field" id="pkField">
+        <div class="lab"><span class="n">TABLE</span>테이블 패키지 <span class="ltd">LIMITED</span></div>
+        <p class="hint">모든 테이블은 엔트리 티켓 포함 · 원하는 테이블을 누르면 테이블 예약으로 바뀝니다.</p>
+        <div class="pk-list" id="tblSeg" role="radiogroup" aria-label="테이블 패키지"></div>
+        <div class="pk-meta" id="pkMeta"></div>
+      </div>
+
       <div class="field" id="qtyField">
         <div class="lab"><span class="n">06</span>티켓 구매 수 <span class="req">*</span></div>
         <div class="qty">
@@ -232,8 +261,8 @@ const HTML = `
       </div>
 
       <div class="field" id="tableField" hidden>
-        <div class="lab"><span class="n">06</span>테이블 선택 <span class="req">*</span></div>
-        <div class="seg" id="tblSeg" role="radiogroup" aria-label="테이블 종류"></div>
+        <div class="lab"><span class="n">06</span>테이블 예약 정보 <span class="req">*</span></div>
+        <p class="hint" id="tblChosen"></p>
         <div class="tbl-sub">
           <div class="lab">보틀 선택 <span class="req">*</span></div>
           <div class="bottles" id="bottles"></div>
@@ -277,6 +306,7 @@ const HTML = `
         <select id="arrival" name="arrival" required>
           <option value="" disabled selected>18:00 – 23:00 사이에서 선택</option>
         </select>
+        <p class="hint">현장 운영 준비를 위한 참고용이에요. 정확하지 않아도 괜찮고, 다른 시간에 오셔도 됩니다.</p>
       </div>
 
       <label class="consent"><input type="checkbox" id="agree" required>
@@ -294,6 +324,7 @@ const HTML = `
       <p id="doneText">신청이 접수되었습니다.<br>입금 확인 후 안내 문자를 드릴게요.</p>
       <span class="num" id="doneNum"></span>
       <p class="hint" style="margin-top:8px">접수번호는 문의 시 알려주세요.</p>
+      <a class="quiz-cta" id="quizCtaDone" target="_blank" rel="noopener"><span>신청 완료! 이제 내 음악 취향을 테스트해 보세요<small>타임테이블 10명 중 나와 맞는 DJ 찾기</small></span><i>TEST →</i></a>
       <div class="done-actions">
         <button type="button" class="again" id="againBtn">추가 신청하기</button>
       </div>
@@ -332,15 +363,32 @@ const CONFIG = {
     { id: "table",   label: "테이블", table: true, tag: "LIMITED", note: "엔트리 티켓 포함 · 11월 21일 (토) 자정까지 환불 가능" }
   ],
 
-  // 테이블 패키지. 매진되면 해당 항목에 soldOut: true 를 추가하세요.
+  // 테이블 패키지. count: 운영 테이블 수(화면에 표시). 매진되면 soldOut: true 를 추가하세요.
+  // img: 저장소 루트의 이미지 파일 (없으면 이미지 없이 표시)
+  // ※ VVIP(6인)를 2개로 운영하면 VIP(3-4인) 수량이 줄어드니 count 를 함께 바꿔주세요.
   tables: [
-    { id: "standing", label: "STANDING", where: "3층 · 최대 4인", max: 4, price: 150000, bottles: 1,
-      items: ["보틀 1병"] },
-    { id: "vip",      label: "VIP",      where: "4층 · 최대 4인", max: 4, price: 250000, bottles: 1,
-      items: ["보틀 1병 + 샴페인 2병", "나초 플레이트 1개 + 컵과일 1개", "물 3병"] },
-    { id: "vvip",     label: "VVIP",     where: "4층 · 최대 6인", max: 6, price: 450000, bottles: 2,
-      items: ["보틀 2병 + 샴페인 3병", "나초 플레이트 2개 + 컵과일 2개", "물 5병"] }
+    { id: "standing", label: "STANDING", where: "3층 바테이블 · 최대 4인", max: 4, price: 150000, bottles: 1, count: 3,
+      img: "tbl_standing.webp", items: ["보틀 1병"] },
+    { id: "vip",      label: "VIP",      where: "복층 · 3–4인 테이블 · 최대 4인", max: 4, price: 250000, bottles: 1, count: 5,
+      img: "tbl_vip.webp", items: ["보틀 1병 + 샴페인 2병", "나초 플레이트 1개 + 컵과일 1개", "물 3병"] },
+    { id: "vvip",     label: "VVIP",     where: "복층 · 6인 테이블 · 최대 6인", max: 6, price: 450000, bottles: 2, count: 1,
+      img: "tbl_vvip.webp", items: ["보틀 2병 + 샴페인 3병", "나초 플레이트 2개 + 컵과일 2개", "물 5병"] }
   ],
+
+  // DJ 타임테이블 [시작, 끝, 이름, 장르]
+  timetable: [
+    ["18:00", "18:30", "SIMSEXY",   "Jazzy Hip-hop / Soul"],
+    ["18:30", "19:00", "DJ MAPLE",  "Tech House"],
+    ["19:00", "19:30", "MIGNØ",     "French Nu-Disco"],
+    ["19:30", "20:00", "HONDO",     "Pop EDM"],
+    ["20:00", "20:30", "DJ NO:BIZ", "K·J Indie Pop"],
+    ["20:30", "21:00", "JENNA KIM", "Lo-fi House"],
+    ["21:00", "21:30", "LINZI",     "K-pop × Hip-hop × R&B"],
+    ["21:30", "22:00", "ELISSA",    "90s R&B → Trap"],
+    ["22:00", "22:30", "D.KIM",     "Acid / Hard Techno"],
+    ["22:30", "23:00", "DPC",       "French Electro"]
+  ],
+  testUrl: "https://claude.ai/artifact/THoUpHQuBbv8W2C3fJqAt6",   // 음악 취향 테스트
   spirits: ["보드카", "호세 쿠엘보", "제임슨"],
   spiritsEn: ["VODKA", "JOSE CUERVO", "JAMESON"],
   tableBasics: "잔 · 얼음 · 물 · 토닉 2병",
@@ -407,31 +455,33 @@ for (let m = CONFIG.event.startHour*60; m <= CONFIG.event.endHour*60; m += CONFI
 $("#acctNum").textContent = CONFIG.account.number;
 $("#acctBank").textContent = CONFIG.account.bank + " · 예금주 " + CONFIG.account.holder;
 
-// table packages (안내 블록)
-const tableTicket = CONFIG.tickets.find(t => t.table);
-$("#pkBody").innerHTML = CONFIG.tables.map((x, i) => `
-  <div class="pk-card${i === CONFIG.tables.length - 1 ? " top" : ""}">
-    <h4>${x.label}${x.soldOut ? ' <span class="ltd">SOLD OUT</span>' : ""}</h4><span class="price">${won(x.price).replace("원", "")}<small style="font-size:12px">원</small></span>
-    <span class="where">${x.where}</span>
-    <ul>${x.items.map(it => `<li>${it}</li>`).join("")}</ul>
-  </div>`).join("") + `
-  <div class="pk-spirits"><span class="k">Spirit options</span>${CONFIG.spiritsEn.map(s => `<b>${s}</b>`).join('<span style="color:var(--red-2)">/</span>')}</div>
-  <ul class="pk-info">
-    <li><strong>모든 테이블 구매 시 엔트리 티켓 포함</strong></li>
-    <li>기본 제공: ${CONFIG.tableBasics} · VIP·VVIP는 기본 제공에 구성이 추가됩니다</li>
-    <li>주류 병 수에 따라 스탠딩 / VIP / VVIP 테이블 배정 · 수량 한정</li>
-  </ul>
-  ${tableTicket ? '<button type="button" class="pk-cta" id="pkCta">테이블 예약하기</button>' : ""}`;
+// time table
+const hlName = PAGE.highlight && PAGE.highlight.name ? PAGE.highlight.name.toUpperCase() : "";
+$("#ttList").innerHTML = CONFIG.timetable.map(([a, b, n, g]) => {
+  const me = hlName && n.toUpperCase().includes(hlName);
+  return `<li${me ? ' class="me"' : ""}><time>${a} – ${b}</time><b>${n}${me ? '<span class="star">★</span>' : ""}</b><span class="g">${g}</span></li>`;
+}).join("");
+$("#quizCta").href = $("#quizCtaDone").href = CONFIG.testUrl;
 
-// table form
+// table packages (form)
+const tableTicket = CONFIG.tickets.find(t => t.table);
 const tblSeg = $("#tblSeg");
 CONFIG.tables.forEach(x => tblSeg.insertAdjacentHTML("beforeend", `
   <input type="radio" id="tb-${x.id}" name="tableType" value="${x.label}" ${x.soldOut ? "disabled" : ""}>
-  <label for="tb-${x.id}">
-    <strong>${x.label}${x.soldOut ? ' <span class="tag">SOLD OUT</span>' : ""}</strong>
-    <span class="p">${won(x.price)}</span>
-    <span class="note">${x.where} · ${x.items.join(" · ")}</span>
+  <label class="pk-card" for="tb-${x.id}">
+    <span class="txt">
+      <h4>${x.label}${x.soldOut ? ' <span class="ltd">SOLD OUT</span>' : ""}</h4>
+      <span class="where">${x.where}</span>
+      <span class="price">${won(x.price)}</span>
+      ${x.count ? `<span class="cnt">LIMITED · <b>${x.count}</b> TABLE${x.count > 1 ? "S" : ""} ONLY</span>` : ""}
+    </span>
+    ${x.img ? `<span class="img"><img src="${ROOT + x.img}" alt="" loading="lazy" onerror="this.parentNode.remove()"></span>` : ""}
+    <ul>${x.items.map(it => `<li>${it}</li>`).join("")}</ul>
   </label>`));
+$("#pkMeta").innerHTML = `
+  <div class="sp"><span class="k">Spirit options</span>${CONFIG.spiritsEn.map(s => `<b>${s}</b>`).join('<span style="color:var(--red-2)">/</span>')}</div>
+  <div><strong>기본 제공</strong> ${CONFIG.tableBasics} · VIP·VVIP는 기본 제공에 구성이 추가됩니다.</div>
+  <div>주류 병 수에 따라 스탠딩 / VIP / VVIP 테이블이 배정됩니다.</div>`;
 const tbl = () => CONFIG.tables.find(x => $("#tb-" + x.id).checked);
 let pax = 1;
 function renderBottles(){
@@ -443,7 +493,14 @@ function renderBottles(){
       ${CONFIG.spirits.map(s => `<option ${prev[i] === s ? "selected" : ""}>${s}</option>`).join("")}
     </select>`).join("");
 }
-document.querySelectorAll("input[name=tableType]").forEach(r => r.addEventListener("change", () => { renderBottles(); render(); }));
+document.querySelectorAll("input[name=tableType]").forEach(r => r.addEventListener("change", () => {
+  if (tableTicket) $("#t-" + tableTicket.id).checked = true;
+  renderBottles(); render();
+}));
+document.querySelectorAll("input[name=ticket]").forEach(r => r.addEventListener("change", () => {
+  if (!ticket().table) document.querySelectorAll("input[name=tableType]").forEach(x => x.checked = false);
+  renderBottles();
+}));
 $("#pPlus").onclick = () => { const x = tbl(); if (pax < (x ? x.max : 6)) { pax++; render(); } };
 $("#pMinus").onclick = () => { if (pax > 1) { pax--; render(); } };
 renderBottles();
@@ -462,14 +519,11 @@ function render(){
   $("#paxOut").value = pax;
   $("#pPlus").disabled = !x || pax >= max; $("#pMinus").disabled = pax <= 1;
   $("#tblPrice").textContent = x ? won(x.price) : "—";
+  $("#tblChosen").innerHTML = x ? `선택한 테이블: <b style="color:var(--fg)">${x.label}</b> · ${x.where}` : '위 <b style="color:var(--fg)">테이블 패키지</b>에서 원하는 테이블을 선택해 주세요.';
   $("#paxHint").textContent = x ? `${x.label} 최대 ${x.max}인 · 인원 수와 관계없이 테이블 금액만 입금하시면 됩니다.` : "테이블을 먼저 선택해 주세요.";
 }
 $("#plus").onclick = () => { if (qty < CONFIG.maxQty) { qty++; render(); } };
 $("#minus").onclick = () => { if (qty > 1) { qty--; render(); } };
-if ($("#pkCta")) $("#pkCta").onclick = () => {
-  $("#t-" + tableTicket.id).checked = true; render();
-  $("#tableField").scrollIntoView({ behavior: "smooth", block: "center" });
-};
 document.querySelectorAll("input[name=ticket]").forEach(r => r.addEventListener("change", render));
 render();
 
@@ -522,7 +576,7 @@ $("#form").addEventListener("submit", async e => {
   if (!ticket()) { bad = bad || $("#seg"); $("#seg").closest(".field").classList.add("invalid"); }
   if (ticket() && ticket().table) {
     const empty = [...document.querySelectorAll("[data-table-req]")].find(s => !s.value);
-    if (!tbl() || empty) { $("#tableField").classList.add("invalid"); bad = bad || (tbl() ? empty : $("#tblSeg")); }
+    if (!tbl() || empty) { $("#tableField").classList.add("invalid"); if (!tbl()) $("#pkField").classList.add("invalid"); bad = bad || (tbl() ? empty : $("#tb-" + CONFIG.tables.find(x => !x.soldOut).id)); }
   }
   if (bad) { msg.textContent = "필수 항목을 확인해 주세요."; msg.classList.add("err"); bad.focus?.(); return; }
 
