@@ -223,9 +223,6 @@ const HTML = `
       <summary><span class="t">DJ TIME TABLE</span><span class="sub">18:00 – 23:00</span><span class="chev">자세히</span></summary>
       <ol class="tt-list" id="ttList"></ol>
     </details>
-    <div class="tt-quiz">
-      <a class="quiz-cta" id="quizCta" target="_blank" rel="noopener"><span>내 취향에 맞는 DJ 찾기<small>질문 8개로 알아보는 음악 취향 테스트</small></span><i>TEST →</i></a>
-    </div>
 
     <form id="form" novalidate>
       <div class="field">
@@ -259,7 +256,6 @@ const HTML = `
           <div class="pk-list" id="tblSeg" role="radiogroup" aria-label="테이블 패키지"></div>
           <div class="pk-meta" id="pkMeta"></div>
         </div>
-        <p class="hint">모든 티켓에 프리드링크 1잔이 포함됩니다.</p>
       </div>
 
       <div class="field" id="qtyField">
@@ -339,7 +335,7 @@ const HTML = `
       <p id="doneText">신청이 접수되었습니다.<br>입금 확인 후 안내 문자를 드릴게요.</p>
       <span class="num" id="doneNum"></span>
       <p class="hint" style="margin-top:8px">접수번호는 문의 시 알려주세요.</p>
-      <a class="quiz-cta" id="quizCtaDone" target="_blank" rel="noopener"><span>신청 완료! 이제 내 음악 취향을 테스트해 보세요<small>타임테이블 10명 중 나와 맞는 DJ 찾기</small></span><i>TEST →</i></a>
+      <a class="quiz-cta" id="quizCtaDone" target="_blank" rel="noopener"><span>SYZYGY를 제대로 즐기는 방법!<small>질문 5개로 알아보는 음악 취향 테스트</small></span><i>TEST →</i></a>
       <div class="done-actions">
         <button type="button" class="again" id="againBtn">추가 신청하기</button>
       </div>
@@ -371,10 +367,10 @@ const CONFIG = {
     startHour: 18, endHour: 23, slotMinutes: 30   // 예상 도착 시간 선택지
   },
 
-  // 티켓 구분. price: 숫자면 금액, null이면 "별도 문의". deadline이 지나면 자동 마감.
+  // 티켓 구분. price: 숫자면 금액, null이면 "별도 문의". deadline(한국시간 그날 자정)이 지나면 자동 마감, 그 전엔 D-n 표시.
   tickets: [
-    { id: "early",   label: "얼리버드", price: 15000, deadline: "2026-11-21", note: "11월 21일 (토)까지 · 환불 불가" },
-    { id: "regular", label: "일반",     price: 20000, note: "11월 25일 (수) 자정까지 환불 가능 · 별도 문의" },
+    { id: "early",   label: "얼리버드", price: 15000, deadline: "2026-11-21", note: "11월 21일 (토)까지 · 환불 불가<br>프리드링크 1잔 포함" },
+    { id: "regular", label: "일반",     price: 20000, note: "11월 25일 (수) 자정까지 환불 가능<br>프리드링크 1잔 포함" },
     { id: "table",   label: "테이블", table: true, note: "엔트리 티켓 포함 · 11월 21일 (토) 자정까지 환불 가능" }
   ],
 
@@ -443,8 +439,10 @@ if (!CONFIG.endpoint) $("#demo").classList.add("on");
 // tickets
 const seg = $("#seg");
 CONFIG.tickets.forEach((t, i) => {
-  const closed = t.deadline && today > new Date(t.deadline + "T23:59:59");
-  const tag = closed ? "CLOSED" : (t.deadline ? "~" + t.deadline.slice(5).replace("-", ".") : "");
+  const closed = t.deadline && today > new Date(t.deadline + "T23:59:59+09:00");   // 한국시간 기준
+  const kstToday = new Date(today.getTime() + 9*3600*1000).toISOString().slice(0, 10);
+  const dLeft = t.deadline ? Math.round((Date.parse(t.deadline) - Date.parse(kstToday)) / 86400000) : null;
+  const tag = closed ? "CLOSED" : (t.deadline ? (dLeft === 0 ? "D-DAY" : "D-" + dLeft) : "");
   seg.insertAdjacentHTML("beforeend", `
     <input type="radio" id="t-${t.id}" name="ticket" value="${t.label}" ${closed ? "disabled" : ""}${t.table ? ' class="is-table"' : ""}>
     <label for="t-${t.id}"${t.table ? ' class="is-table"' : ""}>
@@ -476,7 +474,7 @@ $("#ttList").innerHTML = CONFIG.timetable.map(([a, b, n, g]) => {
   const me = hlName && n.toUpperCase().includes(hlName);
   return `<li${me ? ' class="me"' : ""}><time>${a} – ${b}</time><b>${n}${me ? '<span class="star">★</span>' : ""}</b><span class="g">${g}</span></li>`;
 }).join("");
-$("#quizCta").href = $("#quizCtaDone").href = CONFIG.testUrl;
+$("#quizCtaDone").href = CONFIG.testUrl;
 
 // table packages (form)
 const tableTicket = CONFIG.tickets.find(t => t.table);
