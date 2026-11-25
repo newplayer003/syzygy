@@ -79,21 +79,31 @@ body{background:var(--bg);color:var(--fg);font-family:var(--kr);font-size:15px;l
 .tt .tt-q .quiz-cta{margin-top:0}
 .tt-list .av{width:24px;height:24px;border-radius:50%;background-size:240px 24px;background-repeat:no-repeat;background-color:#1a1616;align-self:center;flex:none}
 /* floor guide */
-.fl{display:grid;gap:0;border:1px solid var(--line)}
-.fl-row{display:grid;grid-template-columns:34px 1fr;gap:0 10px;padding:10px 12px;border-top:1px solid var(--line);align-items:start}
-.fl-row:first-child{border-top:0}
-.fl-row .f{font:700 15px var(--en);letter-spacing:.02em;color:var(--fg);line-height:1.2}
-.fl-row.main{background:linear-gradient(90deg,rgba(216,15,38,.14),rgba(216,15,38,.02))}
-.fl-row.main .f{color:var(--red-2)}
-.fl-row strong{display:block;font-size:13px;font-weight:600;color:var(--fg);line-height:1.45}
-.fl-row small{display:block;font-size:12px;color:var(--fg-2);line-height:1.5;margin-top:2px}
-.fl-t{display:flex;flex-wrap:wrap;align-items:center;gap:5px 8px}
-.fl-t strong{display:inline}
-.chips{display:flex;flex-direction:column;align-items:flex-end;gap:4px}
+.fl{display:grid;gap:0;border-top:1px solid var(--fg-2)}
+.fl-row{display:grid;grid-template-columns:40px 1fr auto;gap:0 12px;padding:12px 2px;border-bottom:1px solid #3a3335;align-items:start}
+.fl-row .f{font:600 22px/1 var(--en);letter-spacing:-.01em;color:var(--fg);padding-top:1px;display:grid;justify-items:start;gap:7px}
+.fl-row .f .chip{font-size:10px;padding:3px 4px 2px;border-color:var(--red-2);color:var(--red-2)}
+.fl-row.main .f,.fl-row.in .f{color:var(--red-2)}
+.fl-c{min-width:0;word-break:keep-all}
+.fl-items{display:flex;flex-wrap:wrap;align-items:flex-start;row-gap:6px;overflow:hidden;margin-left:-10px}
+.fl-items .it{display:grid;gap:1px;position:relative;padding:0 10px;margin-left:-1px}
+.fl-items .it::before{content:"";position:absolute;left:0;top:4px;width:1px;height:13px;background:var(--fg-2)}
+.fl-items .it b{font-size:14px;font-weight:600;color:var(--fg);line-height:1.3;white-space:nowrap}
+.fl-items .it i{font:400 10px/1.2 var(--en);font-style:normal;color:var(--fg-2);letter-spacing:.02em;white-space:nowrap}
+.fl-row small{display:block;font-size:12.5px;font-weight:600;color:var(--fg);line-height:1.5;margin-top:7px}
+.fl-row small + small{margin-top:1px}
+.fl svg,.fl-note svg{fill:none;stroke:currentColor;stroke-width:1.3;stroke-linejoin:round;stroke-linecap:round}
+.wc{display:flex;align-items:center;gap:8px;align-self:start;padding-top:2px;color:var(--fg)}
+.wci{display:grid;justify-items:center;gap:2px}
+.wci svg{width:14px;height:23px}
+.wci.sm svg{width:24px;height:15px}
+.wci.sm{align-self:center}
 .chip{font:600 9.5px/1 var(--en);letter-spacing:.06em;padding:4px 5px 3px;white-space:nowrap;border:1px solid var(--line);color:var(--fg-2)}
-.chip.wc{border-color:#3a3335;color:var(--fg);font-family:var(--kr);font-size:11px;font-weight:500;letter-spacing:0;padding:3px 6px 2px}
 .chip.in{border-color:var(--fg-2);color:var(--fg);font-family:var(--kr);font-size:10px}
-.fl-note{font-size:12.5px;color:var(--fg-2);margin:10px 0 0;line-height:1.7}
+.fl-note{display:grid;gap:4px;font-size:12.5px;color:var(--fg-2);margin:12px 0 0;line-height:1.5}
+.fl-note .ln{display:flex;align-items:center;gap:8px}
+.fl-note .ln svg{width:10px;height:16px;color:var(--fg)}
+.fl-note .ln-h{font-size:11px;color:#6c6466}
 .fl-note b{color:var(--fg);font-weight:600}
 /* steps & checks */
 .steps{list-style:none;margin:0;padding:0;counter-reset:st}
@@ -482,13 +492,14 @@ const CONFIG = {
   testUrl: "https://claude.ai/artifact/THoUpHQuBbv8W2C3fJqAt6",   // 음악 취향 테스트
 
   // ===== 파티 가이드 (페이지 상단 접이식 안내) =====
-  // 층별 안내: 위층부터. lines: 설명 줄. wc: { m: 남자 칸 수, w: 여자 칸 수 } (없으면 화장실 없음). main: true면 강조
+  // 층별 안내: 위층부터. items: [한글, 영문]. notes: 설명 줄. smoke: true면 오른쪽에 흡연 아이콘. wc: { m: 남자 칸 수, w: 여자 칸 수 } (없으면 화장실 없음). main: true면 강조
   floors: [
-    { f: "5F", title: "리셉션", tags: ["입장"], lines: ["입장 / 팔찌 착용 / 짐 보관 (무료, ~23:30)", "프리드링크 수령, 술꼬마 F&B", "🚬 테라스 흡연구역"] },
-    { f: "4F", title: "VIP 존", lines: ["VIP, VVIP 테이블"] },
-    { f: "3F", title: "메인 스테이지", main: true, lines: ["DJ 공연, 스탠딩 테이블", "바 (주류 판매), 포토존"], wc: { m: 1, w: 1 } },
-    { f: "2F", title: "화장실", wc: { m: 1, w: 1 } },
-    { f: "1F", title: "엘리베이터", lines: ["엘리베이터 타고 5F로 올라가세요"], wc: { w: 3 } }
+    { f: "5F", tag: "입장", items: [["리셉션", "Reception"], ["짐 보관", "Coat check"], ["술꼬마 F&B", "Food & Drinks"], ["테라스", "Smoking area"]],
+      notes: ["입장, 팔찌 착용, 프리드링크 수령", "짐 보관 무료 (~23:30)"], smoke: true },
+    { f: "4F", items: [["VIP 존", "VIP & VVIP tables"]] },
+    { f: "3F", main: true, items: [["메인 스테이지", "Main stage"], ["바", "Bar"], ["포토존", "Photo zone"]], wc: { m: 1, w: 1 } },
+    { f: "2F", items: [["화장실", "Restroom"]], wc: { m: 1, w: 1 } },
+    { f: "1F", items: [["엘리베이터", "Elevator to 5F"]], wc: { w: 3 } }
   ],
   enter: [
     ["1F 엘리베이터 타고 5F로", "Take the elevator to 5F"],
@@ -586,14 +597,20 @@ $("#ttList").innerHTML = CONFIG.timetable.map(([a, b, n, g, id, alt], i) => {
 $("#quizCta").href = $("#quizCtaDone").href = CONFIG.testUrl;
 
 // party guide
-const wcChips = w => w ? (w.m ? `<span class="chip wc">🚹 남 ${w.m}칸</span>` : "") + (w.w ? `<span class="chip wc">🚺 여 ${w.w}칸</span>` : "") : "";
+// 라인 아이콘 (층별 안내도 스타일)
+const ICON = {
+  m: '<svg viewBox="0 0 16 26" aria-hidden="true"><circle cx="8" cy="4" r="2.6"/><path d="M4.6 9h6.8v7.2H9.8V24H6.2v-7.8H4.6z"/></svg>',
+  w: '<svg viewBox="0 0 16 26" aria-hidden="true"><circle cx="8" cy="4" r="2.6"/><path d="M6.4 9h3.2l3.1 8.4H9.9V24H6.1v-6.6H3.3z"/></svg>',
+  smoke: '<svg viewBox="0 0 26 16" aria-hidden="true"><rect x="1.5" y="9" width="15" height="4"/><path d="M19 9v4M22 9v4M19 6.5c0-2.2 3-1.8 3-4.5"/></svg>'
+};
+const sideIcons = x => (x.wc || x.smoke) ? `<span class="wc">${x.smoke ? `<span class="wci sm" title="흡연구역">${ICON.smoke}</span>` : ""}${x.wc && x.wc.m ? `<span class="wci" title="남자 화장실">${ICON.m}</span>` : ""}${x.wc && x.wc.w ? `<span class="wci" title="여자 화장실">${ICON.w}</span>` : ""}</span>` : "";
 const wcFloors = k => CONFIG.floors.filter(x => x.wc && x.wc[k]).map(x => x.f).reverse().join(", ");
 $("#floorBody").innerHTML = `<div class="fl">${CONFIG.floors.map(x => `
-  <div class="fl-row${x.main ? " main" : ""}"><span class="f">${x.f}</span><div>
-    <div class="fl-t"><strong>${x.title}</strong>${(x.tags || []).map(t => `<span class="chip in">${t}</span>`).join("")}${wcChips(x.wc)}</div>
-    ${(x.lines || []).map(l => `<small>${l}</small>`).join("")}
-  </div></div>`).join("")}</div>
-  <p class="fl-note">🚹 남자 화장실 <b>${wcFloors("m")}</b><br>🚺 여자 화장실 <b>${wcFloors("w")}</b></p>`;
+  <div class="fl-row${x.main ? " main" : ""}${x.tag ? " in" : ""}"><span class="f">${x.f}${x.tag ? `<span class="chip in">${x.tag}</span>` : ""}</span><div class="fl-c">
+    <div class="fl-items">${x.items.map(([k, e]) => `<span class="it"><b>${k}</b><i>${e}</i></span>`).join("")}</div>
+    ${(x.notes || []).map(l => `<small>${l}</small>`).join("")}
+  </div>${sideIcons(x)}</div>`).join("")}</div>
+  <p class="fl-note"><span class="ln">${ICON.m}남자 화장실 <b>${wcFloors("m")}</b></span><span class="ln">${ICON.w}여자 화장실 <b>${wcFloors("w")}</b></span></p>`;
 $("#enterBody").innerHTML = `<p class="gd-top"><b>DOORS 17:30</b>&nbsp;&nbsp;SHOW 18:00 – 23:00</p><ol class="steps">${CONFIG.enter.map(([k, e]) => `<li><div><strong>${k}</strong><small>${e}</small></div></li>`).join("")}</ol>`;
 $("#goodBody").innerHTML = `<ul class="checks">${CONFIG.goodToKnow.map(([k, e]) => `<li><div><strong>${k}</strong><small>${e}</small></div></li>`).join("")}</ul>`;
 if (CONFIG.menu.length) {
